@@ -6,14 +6,10 @@
 /*   By: vkarpova <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/17 16:13:56 by vkarpova          #+#    #+#             */
-/*   Updated: 2018/08/17 16:42:14 by vkarpova         ###   ########.fr       */
+/*   Updated: 2018/08/17 17:00:48 by vkarpova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./libft/libft.h"
-#include "get_next_line.h"
-#include "mlx.h"
-#include <unistd.h>
 #include "fdf.h"
 
 int		ft_words(char *s, char c)
@@ -38,24 +34,60 @@ int		ft_words(char *s, char c)
     return (w);
 }
 
-void    read_file(char **argv)
+
+t_matrix    **save_coords(char *line, int line_nb, t_all all)
 {
-    char    *line;
-    int     fd;
-	t_all	all;
-	int		line_nb;
+    t_matrix    **coords;
+    char        **split;
+    int         i;
+
+    // printf("\n\nline%d -> %s\n", line_nb, line);
+    split = ft_strsplit(line, ' ');
+    i = 0;
+    coords = (t_matrix **)malloc(sizeof(t_matrix *) * all.map_x);
+    while (split[i] != '\0')
+    {
+        coords[line_nb] = (t_matrix *)malloc(sizeof(t_matrix));
+        coords[line_nb][i].x = i;
+        coords[line_nb][i].y = line_nb;
+        coords[line_nb][i].z = atoi(split[i]);
+        // printf("(%d,%d,%d) ", coords[line_nb][i].x, coords[line_nb][i].y, coords[line_nb][i].z);
+        i++;
+    }
+    // printf("\n");
+    return (coords);
+}
+
+
+t_all    read_file(char **argv, t_all all)
+{
+    char        *line;
+    int         fd;
+	int         line_nb;
+    t_matrix    **coords;
+    int         check;
 
 	line_nb = 0;
+    check = 0;
     fd = open(argv[1], O_RDONLY);
     while (get_next_line(fd, &line) > 0)
     {
-		all.max_x = ft_words(line, ' ') - 1;
-//		printf("x = %d\n", all.max_x - 1);
-//		ft_strsplit(line, ' ');
+		all.map_x = ft_words(line, ' ');
+        if (line_nb != 0 && check != all.map_x)
+        {
+            all.map_x = -1;
+            break;
+        }
+        coords = save_coords(line, line_nb, all);
 		free(line);
 		line_nb++;
+        check = all.map_x;
     }
-	all.max_y = line_nb - 1;
-	printf("max_x = %d\n", all.max_x);
-	printf("max_y = %d\n", all.max_y);
+    all.map_y = line_nb;
+    close(fd);
+    // printf("map_x = %d,map_y = %d\n", all.map_x, all.map_y);
+    return (all);
+
+   
+
 }
