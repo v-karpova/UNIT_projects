@@ -10,16 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "fdf.h"
 
-/*clear && gcc ./libft-*.c main.c read_map.c get_next_line.c draw.c -lmlx -framework OpenGL -framework AppKit */
-
-int     deal_key(int key, void *param)
-{
-    ft_putstr("->the button was pressed\n");
-    return (0);
-}
+/*clear && gcc ./libft-*.c main.c work.c get_next_line.c draw.c buttons.c -lmlx -framework OpenGL -framework AppKit */
 
 void    error_msg(int code)
 {
@@ -29,38 +22,81 @@ void    error_msg(int code)
         ft_putstr("invalid map, try add another one\n");    
 }
 
+int		ft_words(char *s, char c)
+{
+    int		w;
+    int		i;
+
+    w = 0;
+    i = 0;
+    while (s[i] != '\0')
+    {
+        while (s[i] == c)
+            i++;
+        while (s[i] != c && s[i] != '\0')
+            i++;
+        if ((s[i] == c && s[i] != '\0') || (s[i] == '\0' && s[i - 1] != c))
+            w++;
+        if (s[i] == '\0')
+            return (w);
+        i++;
+    }
+    return (w);
+}
+
+t_all    *read_file(char **argv, t_all *all)
+{
+    char        *line;
+    int         fd;
+	int         line_nb;
+    t_matrix    **coords;
+    int         check;
+
+	line_nb = 0;
+    check = 0;
+    fd = open(argv[1], O_RDONLY);
+    coords = (t_matrix **)malloc(sizeof(t_matrix*) * all->map_y);
+    while (get_next_line(fd, &line) > 0)
+    {
+		all->map_x = ft_words(line, ' ');
+        if (line_nb != 0 && check != all->map_x)
+        {
+            all->map_x = -1;
+            break;
+        }
+        coords[line_nb] = save_coords(line, line_nb, all);
+		free(line);
+		line_nb++;
+        check = all->map_x;
+    }
+    all->map_y = line_nb;
+    close(fd);
+    all->matrix = coords;
+    return (all);
+}
+
 int main(int argc, char **argv)
 {
-    t_all   all;
+    t_all   *all;
 
     if (argc == 2)
     {
-//  ??      all = malloc(sizeof(t_all));
+        all = (t_all *)ft_memalloc(sizeof(t_all));
         all = read_file(argv, all);
-        if (all.map_x == -1)
+        if (all->map_x == -1)
        {
           error_msg(2);
           return (0);
         }
+        // go(all);
+    write(1, "-0-\n", 4);
+    all->mlx_ptr = mlx_init();
+    write(1, "-1-\n", 4);
+    all->win_ptr = mlx_new_window(all->mlx_ptr, 1000, 1000, "FDF vkarpova");
+     write(1, "-2-\n", 4);
+    mlx_hook(WIN_PTR, 2, 5, event, all);
+    mlx_loop(all->mlx_ptr);
 
-        all = draw(all);
-
-// printf("-------OK--------\n");
-
-    // mlx_pixel_put(mlx_ptr, win_ptr, 250, 250, 0x00FFFFFF);
-    // mlx_string_put(mlx_ptr, win_ptr, 10,10, 0x00FFFFFF, "MAP: 42\n");
-    // mlx_string_put(mlx_ptr, win_ptr, 10,30, 0x00FFFFFF, "--------\n");
-    // mlx_string_put(mlx_ptr, win_ptr, 10,50, 0x00FFFFFF, "CONTROL:\n");
-    // mlx_string_put(mlx_ptr, win_ptr, 10,70, 0x00FFFFFF, "left   <\n");
-    // mlx_string_put(mlx_ptr, win_ptr, 10,90, 0x00FFFFFF, "right  >\n");
-
-    // mlx_key_hook(win_ptr, deal_key, (void *)0);
- 
-    
-
-// int mlx_clear_window ( void *mlx_ptr, void *win_ptr );
-// int mlx_destroy_window ( void *mlx_ptr, void *win_ptr );
-        mlx_loop(all.mlx_ptr);
     }
     else 
         error_msg(1);

@@ -13,29 +13,54 @@
 #ifndef FT_FDF_H
 # define FT_FDF_H
 
+#define WIN_X 2000
+#define WIN_Y 1000
+#define MAX_X all->map_x
+#define MAX_Y all->map_y
+#define MLX_PTR all->mlx_ptr
+#define WIN_PTR all->win_ptr
+// # define
+// # define
+// # define
+
+
 #include <unistd.h>
 #include <stdlib.h>
 #include <fcntl.h>
-#include <math.h>
-
-typedef struct 		s_all
-{
-	void *mlx_ptr;
-    void *win_ptr;
-	t_matrix	matrix;
-
-
-}					t_all;
+#include "math.h"
+#include "mlx.h"
+#include "libft/libft.h"
+#include "get_next_line.h"
 
 typedef struct	s_matrix
 {
-	int	x;
-	int	y;
-	int	z;
-	int	color;
+	int		x;
+	int		y;
+	int		z;
+	int		color;
 }				t_matrix;
+
+typedef struct 		s_all
+{
+	void		*mlx_ptr;
+    void		*win_ptr;
+	t_matrix	**matrix;
+	int			map_x;
+	int			map_y;
+	double		center[3];
+
+}					t_all;
+
 
 #endif
 
-int     ft_words(char *s, char c);
-void    read_file(char **argv);
+void		error_msg(int code);
+int			ft_words(char *s, char c);
+t_all		*read_file(char **argv, t_all *all);
+t_matrix	*save_coords(char *line, int line_nb, t_all *all);
+void		go(t_all *all);
+void  		draw(t_all *all);
+void    	print(t_matrix **matrix, int max_x, int max_y);
+void   		make_line(t_all *all, t_matrix *dot1, t_matrix *dot2);
+void		center(t_all *all);
+int			event(int key, t_all *all);
