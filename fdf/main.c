@@ -81,22 +81,15 @@ int main(int argc, char **argv)
 
     if (argc == 2)
     {
-        all = (t_all *)ft_memalloc(sizeof(t_all));
+        all = (t_all *)malloc(sizeof(t_all));
+        // write(1, "-0-\n", 4);
         all = read_file(argv, all);
         if (all->map_x == -1)
        {
           error_msg(2);
           return (0);
         }
-        // go(all);
-    write(1, "-0-\n", 4);
-    all->mlx_ptr = mlx_init();
-    write(1, "-1-\n", 4);
-    all->win_ptr = mlx_new_window(all->mlx_ptr, 1000, 1000, "FDF vkarpova");
-     write(1, "-2-\n", 4);
-    mlx_hook(WIN_PTR, 2, 5, event, all);
-    mlx_loop(all->mlx_ptr);
-
+        go(all);
     }
     else 
         error_msg(1);

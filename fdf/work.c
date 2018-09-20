@@ -13,17 +13,6 @@
 
 #include "fdf.h"
 
-void	center(t_all *all)
-{
-
-	all->center[0] = all->matrix[MAX_Y / 2][MAX_X / 2].x;
-	all->center[1] = all->matrix[MAX_Y / 2][MAX_X / 2].y;
-	all->center[2] = all->matrix[MAX_Y / 2][MAX_X / 2].z;
-
-    // mlx_pixel_put(MLX_PTR, WIN_PTR, all->center[0], all->center[1], 0x00FF0000);   
-    // printf("center %f,%f,%f \n", all->center[0], all->center[1], all->center[2]);
-}
-
 t_matrix    *save_coords(char *line, int line_nb, t_all *all)
 {
     t_matrix    *coords;
@@ -45,3 +34,51 @@ t_matrix    *save_coords(char *line, int line_nb, t_all *all)
     return (coords);
 }
 
+void    zoom(t_all *all, int how)
+{
+    int     line;
+    int     pos;
+
+    line = 0;
+    while (line < MAX_Y)
+    {
+        pos = 0;
+        while (pos < MAX_X)
+        {
+            if (how == -1)
+            {
+                all->matrix[line][pos].x *= 0.8; 
+                all->matrix[line][pos].y *= 0.8; 
+                all->matrix[line][pos].z *= 0.8;
+            }
+            else
+            {
+                all->matrix[line][pos].x *= 1.2; 
+                all->matrix[line][pos].y *= 1.2; 
+                all->matrix[line][pos].z *= 1.2; 
+            }
+            pos++;
+        }
+        line++;
+    }
+}
+
+void    make_bigger(t_all *all)
+{
+    int     line;
+    int     pos;
+    
+    line = 0;
+    while (line < MAX_Y)
+    {
+        pos = 0;
+        while (pos < MAX_X)
+        {
+            all->matrix[line][pos].x *= 2; 
+        	all->matrix[line][pos].y *= 2; 
+        	all->matrix[line][pos].z *= 2; 
+            pos++;
+        }
+        line++;
+    }
+}

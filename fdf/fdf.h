@@ -34,9 +34,9 @@
 
 typedef struct	s_matrix
 {
-	int		x;
-	int		y;
-	int		z;
+	double		x;
+	double		y;
+	double		z;
 	int		color;
 }				t_matrix;
 
@@ -62,5 +62,7 @@ void		go(t_all *all);
 void  		draw(t_all *all);
 void    	print(t_matrix **matrix, int max_x, int max_y);
 void   		make_line(t_all *all, t_matrix *dot1, t_matrix *dot2);
-void		center(t_all *all);
+void  		to_center(t_all *all);
 int			event(int key, t_all *all);
+void  		zoom(t_all *all, int how);
+void  		make_bigger(t_all *all);

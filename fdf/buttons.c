@@ -14,13 +14,24 @@
 
 int		event(int key, t_all *all)
 {
- if (key == 53)         // ECS
+		if (key == 53)         // ECS
 	    {
 		    free(all);
 		    exit(0);
     	}
-
-
+		else if (key == 12)         // Q zoom--
+	    {
+			mlx_clear_window(MLX_PTR, WIN_PTR);
+		    zoom(all, -1);
+			draw(all);
+    	}
+		else if (key == 14)         // E zoom++
+	    {
+			mlx_clear_window(MLX_PTR, WIN_PTR);
+		    zoom(all, 1);
+			draw(all);
+    	}
+		
         return (0);
 }
 
