@@ -1,18 +1,18 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vkarpova <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/03 16:48:40 by vkarpova          #+#    #+#             */
-/*   Updated: 2018/08/17 16:32:36 by vkarpova         ###   ########.fr       */
-/*                                                                            */
+/*                                      */
+/*                            :::     ::::::::   */
+/*   main.c            :+:   :+:    :+:   */
+/*                          +:+ +:+       +:+    */
+/*   By: vkarpova <marvin@42.fr>                    +#+  +:+       +#+    */
+/*                        +#+#+#+#+#+   +#+     */
+/*   Created: 2018/08/03 16:48:40 by vkarpova        #+#  #+#          */
+/*   Updated: 2018/08/17 16:32:36 by vkarpova       ###   ########.fr    */
+/*                                      */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-/*clear && gcc ./libft-*.c main.c work.c get_next_line.c draw.c buttons.c -lmlx -framework OpenGL -framework AppKit */
+/*clear && gcc ./libft-*.c main.c moves.c work.c get_next_line.c draw.c buttons.c -lmlx -framework OpenGL -framework AppKit */
 
 void    error_msg(int code)
 {
@@ -44,13 +44,13 @@ int		ft_words(char *s, char c)
     return (w);
 }
 
-t_all    *read_file(char **argv, t_all *all)
+t_all   *read_file(char **argv, t_all *all)
 {
     char        *line;
-    int         fd;
-	int         line_nb;
+    int   fd;
+	int   line_nb;
     t_matrix    **coords;
-    int         check;
+    int   check;
 
 	line_nb = 0;
     check = 0;
@@ -82,7 +82,6 @@ int main(int argc, char **argv)
     if (argc == 2)
     {
         all = (t_all *)malloc(sizeof(t_all));
-        // write(1, "-0-\n", 4);
         all = read_file(argv, all);
         if (all->map_x == -1)
        {

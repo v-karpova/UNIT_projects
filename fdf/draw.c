@@ -5,70 +5,69 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vkarpova <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/18 15:23:31 by vkarpova          #+#    #+#             */
-/*   Updated: 2018/09/18 15:23:34 by vkarpova         ###   ########.fr       */
+/*   Created: 2018/09/20 18:38:36 by vkarpova          #+#    #+#             */
+/*   Updated: 2018/09/20 18:38:40 by vkarpova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void    print(t_matrix **matrix, int max_x, int max_y)
+void	print(t_matrix **matrix, int max_x, int max_y)
 {
-    int     line;
-    int     pos;
+	int		line;
+	int		pos;
 
-    line = 0;
-    while (line < max_y)
-    {
-        pos = 0;
-        while (pos < max_x)
-        {
-            printf("(%f,%f,%f) ", matrix[line][pos].x, matrix[line][pos].y,matrix[line][pos].z);
-            pos++;
-        }
-        printf("\n");
-        line++;
-    }
+	line = 0;
+	while (line < max_y)
+	{
+		pos = 0;
+		while (pos < max_x)
+		{
+			printf("(%f,%f,%f) ", matrix[line][pos].x, matrix[line][pos].y,matrix[line][pos].z);
+			pos++;
+		}
+		printf("\n");
+		line++;
+	}
 }
 
-void   go(t_all *all)
+void	go(t_all *all)
 {
-    MLX_PTR = mlx_init();
-    WIN_PTR = mlx_new_window(MLX_PTR, WIN_X, WIN_Y, "FDF vkarpova");
-    draw(all);
- 
-    mlx_hook(WIN_PTR, 2, 5, event, all);
-    mlx_loop(MLX_PTR);
+	MLX_PTR = mlx_init();
+	WIN_PTR = mlx_new_window(MLX_PTR, WIN_X, WIN_Y, "FDF vkarpova");
+	draw(all);
+	mlx_hook(WIN_PTR, 2, 5, event, all);
+	mlx_loop(MLX_PTR);
 }
 
-void    draw(t_all *all)
+void	draw(t_all *all)
 {
-    int     line;
-    int     pos;
+	int		line;
+	int		pos;
   
-    to_center(all);
-    // line = 0;
-    // while (line < MAX_Y)
-    // {
-    //     pos = 0;
-    //     while (pos < MAX_X - 1)
-    //     {
-    //         make_line(all, &all->matrix[line][pos], &all->matrix[line][pos + 1]);
-    //         pos++;
-    //     }
-    //     line++;
-    // }
-    line = 0;
-    while (line < MAX_Y - 1)
-    {
-        pos = 0;
-        while (pos < MAX_X)
-        {
-            make_line(all, &all->matrix[line][pos], &all->matrix[line + 1][pos]);
-            pos++;
-        }
-        line++;
-    }
+	// to_center(all);
+	line = 0;
+	while (line < MAX_Y)
+	{
+		pos = 0;
+		while (pos < MAX_X - 1)
+		{
+			make_line(all, &all->matrix[line][pos], &all->matrix[line][pos + 1]);
+			pos++;
+		}
+		line++;
+	}
+	line = 0;
+	while (line < MAX_Y - 1)
+	{
+		pos = 0;
+		while (pos < MAX_X)
+		{
+			make_line(all, &all->matrix[line][pos], &all->matrix[line + 1][pos]);
+			pos++;
+		}
+		line++;
+	}
 }
 
 void	make_line(t_all *all, t_matrix *c1, t_matrix *c2)
@@ -76,7 +75,7 @@ void	make_line(t_all *all, t_matrix *c1, t_matrix *c2)
 	int		xy[2];
 
 	xy[0] = c1->x;
-	xy[1] = c1->x;
+	xy[1] = c1->y;
 	if (fabs(c2->y - c1->y) > fabs(c2->x - c1->x))
 		while (c1->y > c2->y ? xy[1] >= c2->y : xy[1] <= c2->y)
 		{
@@ -93,26 +92,43 @@ void	make_line(t_all *all, t_matrix *c1, t_matrix *c2)
 		}
 }
 
-void    to_center(t_all *all)
+void	to_center(t_all *all)
 {
-    int     line;
-    int     pos;
-  
-    all->center[0] = all->matrix[MAX_Y / 2][MAX_X / 2].x;
+	int		line;
+	int		pos;
+
+	// all->center[0] = all->matrix[MAX_Y / 2][MAX_X / 2].x;
+	// all->center[1] = all->matrix[MAX_Y / 2][MAX_X / 2].y;
+	// all->center[2] = all->matrix[MAX_Y / 2][MAX_X / 2].z;
+
+	// line = 0;
+	// while (line < MAX_Y)
+	// {
+	// 	pos = 0;
+	// 	while (pos < MAX_X)							/*   ПЕРЕСЧИТАТЬ ЦЕНТР   */
+	// 	{										/*   ПРИ ПЕРЕМЕЩЕНИИ СЛЕТАЕТ   */
+	// 		pos++;
+	// 	}
+	// 	line++;
+	// }
+
+	all->center[0] = all->matrix[MAX_Y / 2][MAX_X / 2].x;
 	all->center[1] = all->matrix[MAX_Y / 2][MAX_X / 2].y;
 	all->center[2] = all->matrix[MAX_Y / 2][MAX_X / 2].z;
-    line = 0;
-    while (line < MAX_Y)
-    {
-        pos = 0;
-        while (pos < MAX_X)
-        {
-            all->matrix[line][pos].x = all->matrix[line][pos].x - all->center[0] + (WIN_X / 2); 
-        	all->matrix[line][pos].y = all->matrix[line][pos].y - all->center[1] + (WIN_Y / 2); 
-        	all->matrix[line][pos].z = all->matrix[line][pos].z - all->center[2]; 
-            pos++;
-        }
-        line++;
-    }
-    // make_bigger(all);
+	// all->center[0] = all->matrix[MAX_Y / 2][MAX_X / 2].x;
+	// all->center[1] = all->matrix[MAX_Y / 2][MAX_X / 2].y;
+	// all->center[2] = all->matrix[MAX_Y / 2][MAX_X / 2].z;
+	line = 0;
+	while (line < MAX_Y)
+	{
+		pos = 0;
+		while (pos < MAX_X)
+		{
+			all->matrix[line][pos].x = all->matrix[line][pos].x - all->center[0] + (WIN_X / 2); 
+			all->matrix[line][pos].y = all->matrix[line][pos].y - all->center[1] + (WIN_Y / 2); 
+			all->matrix[line][pos].z = all->matrix[line][pos].z - all->center[2]; 
+			pos++;
+		}
+		line++;
+	}
 }

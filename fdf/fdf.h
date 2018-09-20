@@ -13,13 +13,14 @@
 #ifndef FT_FDF_H
 # define FT_FDF_H
 
-#define WIN_X 2000
-#define WIN_Y 1000
+#define WIN_X 2550
+#define WIN_Y 1300
+#define BIGGER 40
 #define MAX_X all->map_x
 #define MAX_Y all->map_y
 #define MLX_PTR all->mlx_ptr
 #define WIN_PTR all->win_ptr
-// # define
+
 // # define
 // # define
 
@@ -65,4 +66,6 @@ void   		make_line(t_all *all, t_matrix *dot1, t_matrix *dot2);
 void  		to_center(t_all *all);
 int			event(int key, t_all *all);
 void  		zoom(t_all *all, int how);
-void  		make_bigger(t_all *all);
+void   		move(t_all *all, int where);
+
+
