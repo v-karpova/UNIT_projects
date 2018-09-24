@@ -31,10 +31,40 @@ void	print(t_matrix **matrix, int max_x, int max_y)
 	}
 }
 
+void	move_to_center(t_all *all)
+{
+	int		line;
+	int		pos;
+
+	line = 0;
+	while (line < MAX_Y)
+	{
+		pos = 0;
+		while (pos < MAX_X)
+			pos++;
+		line++;
+	}
+	all->center[0] = all->matrix[line - 1][pos - 1].x / 2;
+	all->center[1] = all->matrix[line - 1][pos - 1].y / 2;
+	line = 0;
+	while (line < MAX_Y)
+	{
+		pos = 0;
+		while (pos < MAX_X)
+		{
+			all->matrix[line][pos].x -= all->center[0] - WIN_X / 2; 
+			all->matrix[line][pos].y -= all->center[1] - WIN_Y / 2; 
+			pos++;
+		}
+		line++;
+	}
+}
+
 void	go(t_all *all)
 {
 	MLX_PTR = mlx_init();
 	WIN_PTR = mlx_new_window(MLX_PTR, WIN_X, WIN_Y, "FDF vkarpova");
+	move_to_center(all);
 	draw(all);
 	mlx_hook(WIN_PTR, 2, 5, event, all);
 	mlx_loop(MLX_PTR);
@@ -44,8 +74,7 @@ void	draw(t_all *all)
 {
 	int		line;
 	int		pos;
-  
-	// to_center(all);
+
 	line = 0;
 	while (line < MAX_Y)
 	{
@@ -68,6 +97,7 @@ void	draw(t_all *all)
 		}
 		line++;
 	}
+
 }
 
 void	make_line(t_all *all, t_matrix *c1, t_matrix *c2)
@@ -90,45 +120,4 @@ void	make_line(t_all *all, t_matrix *c1, t_matrix *c2)
 			mlx_pixel_put(MLX_PTR, WIN_PTR, xy[0], xy[1], 0x00FFFFFF);
 			c2->x > c1->x ? xy[0]++ : xy[0]--;
 		}
-}
-
-void	to_center(t_all *all)
-{
-	int		line;
-	int		pos;
-
-	// all->center[0] = all->matrix[MAX_Y / 2][MAX_X / 2].x;
-	// all->center[1] = all->matrix[MAX_Y / 2][MAX_X / 2].y;
-	// all->center[2] = all->matrix[MAX_Y / 2][MAX_X / 2].z;
-
-	// line = 0;
-	// while (line < MAX_Y)
-	// {
-	// 	pos = 0;
-	// 	while (pos < MAX_X)							/*   ПЕРЕСЧИТАТЬ ЦЕНТР   */
-	// 	{										/*   ПРИ ПЕРЕМЕЩЕНИИ СЛЕТАЕТ   */
-	// 		pos++;
-	// 	}
-	// 	line++;
-	// }
-
-	all->center[0] = all->matrix[MAX_Y / 2][MAX_X / 2].x;
-	all->center[1] = all->matrix[MAX_Y / 2][MAX_X / 2].y;
-	all->center[2] = all->matrix[MAX_Y / 2][MAX_X / 2].z;
-	// all->center[0] = all->matrix[MAX_Y / 2][MAX_X / 2].x;
-	// all->center[1] = all->matrix[MAX_Y / 2][MAX_X / 2].y;
-	// all->center[2] = all->matrix[MAX_Y / 2][MAX_X / 2].z;
-	line = 0;
-	while (line < MAX_Y)
-	{
-		pos = 0;
-		while (pos < MAX_X)
-		{
-			all->matrix[line][pos].x = all->matrix[line][pos].x - all->center[0] + (WIN_X / 2); 
-			all->matrix[line][pos].y = all->matrix[line][pos].y - all->center[1] + (WIN_Y / 2); 
-			all->matrix[line][pos].z = all->matrix[line][pos].z - all->center[2]; 
-			pos++;
-		}
-		line++;
-	}
 }
