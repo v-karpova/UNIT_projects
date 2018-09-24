@@ -31,7 +31,6 @@ t_matrix	*save_coords(char *line, int line_nb, t_all *all)
 		i++;
 	}
 	// printf("\n");
-		
 	return (coords);
 }
 
@@ -48,15 +47,15 @@ void	zoom(t_all *all, int how)
 		{
 			if (how == -1)
 			{
-				all->matrix[line][pos].x *= 0.8; //ограничение!
-				all->matrix[line][pos].y *= 0.8; 
-				all->matrix[line][pos].z *= 0.8;
+				all->matrix[line][pos].x = all->matrix[line][pos].x * 0.8;
+				all->matrix[line][pos].y = all->matrix[line][pos].y * 0.8;
+				all->matrix[line][pos].z = all->matrix[line][pos].z * 0.8;
 			}
 			else
 			{
-				all->matrix[line][pos].x *= 1.2; 
-				all->matrix[line][pos].y *= 1.2; 
-				all->matrix[line][pos].z *= 1.2; 
+				all->matrix[line][pos].x = all->matrix[line][pos].x * 1.2; 
+				all->matrix[line][pos].y = all->matrix[line][pos].y * 1.2;
+				all->matrix[line][pos].z = all->matrix[line][pos].z * 1.2; 
 			}
 			pos++;
 		}

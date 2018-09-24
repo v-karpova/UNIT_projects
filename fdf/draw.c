@@ -31,7 +31,7 @@ void	print(t_matrix **matrix, int max_x, int max_y)
 	}
 }
 
-void	move_to_center(t_all *all)
+void	find_center(t_all *all)
 {
 	int		line;
 	int		pos;
@@ -46,6 +46,15 @@ void	move_to_center(t_all *all)
 	}
 	all->center[0] = all->matrix[line - 1][pos - 1].x / 2;
 	all->center[1] = all->matrix[line - 1][pos - 1].y / 2;
+	all->center[2] = all->matrix[line - 1][pos - 1].z / 2;
+}
+
+void	move_to_center(t_all *all)
+{
+	int		line;
+	int		pos;
+
+	find_center(all);
 	line = 0;
 	while (line < MAX_Y)
 	{
@@ -97,7 +106,6 @@ void	draw(t_all *all)
 		}
 		line++;
 	}
-
 }
 
 void	make_line(t_all *all, t_matrix *c1, t_matrix *c2)

@@ -60,12 +60,11 @@ int			ft_words(char *s, char c);
 t_all		*read_file(char **argv, t_all *all);
 t_matrix	*save_coords(char *line, int line_nb, t_all *all);
 void		go(t_all *all);
-void  		draw(t_all *all);
-void    	print(t_matrix **matrix, int max_x, int max_y);
-void   		make_line(t_all *all, t_matrix *dot1, t_matrix *dot2);
-void  		to_center(t_all *all);
+void		draw(t_all *all);
+void		print(t_matrix **matrix, int max_x, int max_y);
+void		make_line(t_all *all, t_matrix *dot1, t_matrix *dot2);
 int			event(int key, t_all *all);
-void  		zoom(t_all *all, int how);
-void   		move(t_all *all, int where);
-
-
+void		zoom(t_all *all, int how);
+void		move(t_all *all, int where);
+void		move_to_center(t_all *all);
+void		find_center(t_all *all);

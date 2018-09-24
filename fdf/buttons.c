@@ -26,6 +26,7 @@ int		event(int key, t_all *all)
 			mlx_clear_window(MLX_PTR, WIN_PTR);
 			zoom(all, -1);
 			draw(all);
+
 		}
 		else if (key == 14)		 // E zoom++
 		{
