@@ -36,3 +36,84 @@ void	move(t_all *all, int where)
 		line++;
 	}
 }
+
+void	rotat_x(t_all *all, int how)
+{
+	int		line;
+	int		pos;
+	double	y;
+	double	L;
+
+	move_to(all, -1);
+	L = 0.1;
+	line = 0;
+	while (line < MAX_Y)
+	{
+		pos = 0;
+		while (pos < MAX_X)
+		{
+			if (how == -1)
+				L = -0.1;
+			y = all->matrix[line][pos].y;
+			all->matrix[line][pos].y = y * cos(L) + all->matrix[line][pos].z * sin(L);
+			all->matrix[line][pos].z = -y * sin(L) + all->matrix[line][pos].z * cos(L); 
+			pos++;
+		}
+		line++;
+	}
+	move_to(all, 1);
+}
+
+void	rotat_y(t_all *all, int how)
+{
+	int		line;
+	int		pos;
+	double	x;
+	double	L;
+
+	move_to(all, -1);
+	L = 0.1;
+	line = 0;
+	while (line < MAX_Y)
+	{
+		pos = 0;
+		while (pos < MAX_X)
+		{
+			if (how == -1)
+				L = -0.1;
+			x = all->matrix[line][pos].x;
+			all->matrix[line][pos].x = x * cos(L) + all->matrix[line][pos].z * sin(L);
+			all->matrix[line][pos].z = -x * sin(L) + all->matrix[line][pos].z * cos(L); 
+			pos++;
+		}
+		line++;
+	}
+	move_to(all, 1);
+}
+
+void	rotat_z(t_all *all, int how)
+{
+	int		line;
+	int		pos;
+	double	x;
+	double	L;
+
+	move_to(all, -1);
+	L = 0.1;
+	line = 0;
+	while (line < MAX_Y)
+	{
+		pos = 0;
+		while (pos < MAX_X)
+		{
+			if (how == -1)
+				L = -0.1;
+			x = all->matrix[line][pos].x;
+			all->matrix[line][pos].x = x * cos(L) + all->matrix[line][pos].y * sin(L);
+			all->matrix[line][pos].y = -x * sin(L) + all->matrix[line][pos].y * cos(L); 
+			pos++;
+		}
+		line++;
+	}
+	move_to(all, 1);
+}

@@ -34,11 +34,40 @@ t_matrix	*save_coords(char *line, int line_nb, t_all *all)
 	return (coords);
 }
 
+void	move_to(t_all *all, int where)
+{
+	int	 line;
+	int	 pos;
+
+	find_center(all);
+	line = 0;
+	while (line < MAX_Y)
+	{
+		pos = 0;
+		while (pos < MAX_X)
+		{
+			if (where == -1)
+			{
+				all->matrix[line][pos].x -= (WIN_X / 2);
+				all->matrix[line][pos].y -= (WIN_Y / 2);
+			}
+			else
+			{
+				all->matrix[line][pos].x += (WIN_X / 2);
+				all->matrix[line][pos].y += (WIN_Y / 2);
+			}
+			pos++;
+		}
+		line++;
+	}
+}
+
 void	zoom(t_all *all, int how)
 {
 	int	 line;
 	int	 pos;
 
+	move_to(all, -1);
 	line = 0;
 	while (line < MAX_Y)
 	{
@@ -61,4 +90,5 @@ void	zoom(t_all *all, int how)
 		}
 		line++;
 	}
+	move_to(all, 1);
 }

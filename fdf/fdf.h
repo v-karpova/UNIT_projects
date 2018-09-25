@@ -21,10 +21,6 @@
 #define MLX_PTR all->mlx_ptr
 #define WIN_PTR all->win_ptr
 
-// # define
-// # define
-
-
 #include <unistd.h>
 #include <stdlib.h>
 #include <fcntl.h>
@@ -68,3 +64,9 @@ void		zoom(t_all *all, int how);
 void		move(t_all *all, int where);
 void		move_to_center(t_all *all);
 void		find_center(t_all *all);
+void		rotat_x(t_all *all, int how);
+void		rotat_y(t_all *all, int how);
+void		rotat_z(t_all *all, int how);
+void		move_to(t_all *all, int where);
+
+

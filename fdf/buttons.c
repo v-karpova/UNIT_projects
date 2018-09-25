@@ -58,30 +58,55 @@ int		event(int key, t_all *all)
 			move(all, -2);
 			draw(all);
 		}
-		// 		else if (key == )		 // 
+		else if (key == 18)		 //  1 - rot x 1
+		{
+			mlx_clear_window(MLX_PTR, WIN_PTR);
+			rotat_x(all, 1);
+			draw(all);
+		}
+		else if (key == 19)		 //  2 - rot x  -1
+		{
+			mlx_clear_window(MLX_PTR, WIN_PTR);
+			rotat_x(all, -1);
+			draw(all);
+		}
+		else if (key == 20)		 // 3 - rot y 1
+		{
+			mlx_clear_window(MLX_PTR, WIN_PTR);
+			rotat_y(all, 1);
+			draw(all);
+		}
+		else if (key == 21)		 //  4 - rot y -1
+		{
+			mlx_clear_window(MLX_PTR, WIN_PTR);
+			rotat_y(all, -1);
+			draw(all);
+		}
+		else if (key == 22)		 // 5 - rot z 1
+		{
+			mlx_clear_window(MLX_PTR, WIN_PTR);
+			rotat_z(all, 1);
+			draw(all);
+		}
+		else if (key == 23)		 //  6 - rot z -1
+		{
+			mlx_clear_window(MLX_PTR, WIN_PTR);
+			rotat_z(all, -1);
+			draw(all);
+		}
+		// else if (key == 23)		 //  R - reset ?????
 		// {
 		// 	mlx_clear_window(MLX_PTR, WIN_PTR);
-			
+		
 		// 	draw(all);
 		// }
-		// 		else if (key == )		 // 
-		// {
-		// 	mlx_clear_window(MLX_PTR, WIN_PTR);
-			
-		// 	draw(all);
-		// }
-		// 		else if (key == )		 // 
-		// {
-		// 	mlx_clear_window(MLX_PTR, WIN_PTR);
-			
-		// 	draw(all);
-		// }
-		// 		else if (key == )		 // 
-		// {
-		// 	mlx_clear_window(MLX_PTR, WIN_PTR);
-			
-		// 	draw(all);
-		// }
+
+
+
+
+
+
+
 		return (0);
 }
 
