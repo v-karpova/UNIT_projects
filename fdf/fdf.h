@@ -29,31 +29,29 @@
 #include "libft/libft.h"
 #include "get_next_line.h"
 
-typedef struct	s_matrix
+typedef struct		s_matrix
 {
 	double		x;
 	double		y;
 	double		z;
-	int		color;
+	int			color;
 }				t_matrix;
 
-typedef struct 		s_all
+typedef struct		s_all
 {
 	void		*mlx_ptr;
-    void		*win_ptr;
+	void		*win_ptr;
 	t_matrix	**matrix;
 	int			map_x;
 	int			map_y;
 	double		center[3];
-
 }					t_all;
-
 
 #endif
 
 void		error_msg(int code);
 int			ft_words(char *s, char c);
-t_all		*read_file(char **argv, t_all *all);
+t_all		*read_file(char **argv, t_all *all, int fd);
 t_matrix	*save_coords(char *line, int line_nb, t_all *all);
 void		go(t_all *all);
 void		draw(t_all *all);
@@ -68,5 +66,4 @@ void		rotat_x(t_all *all, int how);
 void		rotat_y(t_all *all, int how);
 void		rotat_z(t_all *all, int how);
 void		move_to(t_all *all, int where);
-
-
+int			ft_atoi_base(const char *str, int str_base);

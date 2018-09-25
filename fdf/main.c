@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                      */
-/*                            :::     ::::::::   */
-/*   main.c            :+:   :+:    :+:   */
-/*                          +:+ +:+       +:+    */
-/*   By: vkarpova <marvin@42.fr>                    +#+  +:+       +#+    */
-/*                        +#+#+#+#+#+   +#+     */
-/*   Created: 2018/08/03 16:48:40 by vkarpova        #+#  #+#          */
-/*   Updated: 2018/08/17 16:32:36 by vkarpova       ###   ########.fr    */
-/*                                      */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vkarpova <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/09/25 19:12:12 by vkarpova          #+#    #+#             */
+/*   Updated: 2018/09/25 19:12:15 by vkarpova         ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
@@ -44,17 +44,15 @@ int		ft_words(char *s, char c)
 	return (w);
 }
 
-t_all	*read_file(char **argv, t_all *all)
+t_all	*read_file(char **argv, t_all *all, int fd)
 {
 	char		*line;
-	int	fd;
-	int	line_nb;
+	int			line_nb;
 	t_matrix	**coords;
-	int	check;
+	int			check;
 
 	line_nb = 0;
-	check = 0;
-	fd = open(argv[1], O_RDONLY);
+	check = 0;	
 	coords = (t_matrix **)malloc(sizeof(t_matrix*) * all->map_y);
 	while (get_next_line(fd, &line) > 0)
 	{
@@ -75,22 +73,24 @@ t_all	*read_file(char **argv, t_all *all)
 	return (all);
 }
 
-int main(int argc, char **argv)
+int		main(int argc, char **argv)
 {
 	t_all	*all;
+	int		fd;
 
 	if (argc == 2)
 	{
 		all = (t_all *)malloc(sizeof(t_all));
-		all = read_file(argv, all);
+		fd = open(argv[1], O_RDONLY);
+		all = read_file(argv, all, fd);
 		if (all->map_x == -1)
-	   {
-		  error_msg(2);
-		  return (0);
+		{
+			error_msg(2);
+			return (0);
 		}
 		go(all);
 	}
-	else 
+	else
 		error_msg(1);
-	return(0);
+	return (0);
 }

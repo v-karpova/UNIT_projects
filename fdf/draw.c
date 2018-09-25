@@ -12,26 +12,7 @@
 
 #include "fdf.h"
 
-void	print(t_matrix **matrix, int max_x, int max_y)
-{
-	int		line;
-	int		pos;
-
-	line = 0;
-	while (line < max_y)
-	{
-		pos = 0;
-		while (pos < max_x)
-		{
-			printf("(%f,%f,%f) ", matrix[line][pos].x, matrix[line][pos].y,matrix[line][pos].z);
-			pos++;
-		}
-		printf("\n");
-		line++;
-	}
-}
-
-void	find_center(t_all *all)
+void	color_move(t_all *all, int how)
 {
 	int		line;
 	int		pos;
@@ -41,28 +22,11 @@ void	find_center(t_all *all)
 	{
 		pos = 0;
 		while (pos < MAX_X)
-			pos++;
-		line++;
-	}
-	all->center[0] = all->matrix[line - 1][pos - 1].x / 2;
-	all->center[1] = all->matrix[line - 1][pos - 1].y / 2;
-	all->center[2] = all->matrix[line - 1][pos - 1].z / 2;
-}
-
-void	move_to_center(t_all *all)
-{
-	int		line;
-	int		pos;
-
-	find_center(all);
-	line = 0;
-	while (line < MAX_Y)
-	{
-		pos = 0;
-		while (pos < MAX_X)
 		{
-			all->matrix[line][pos].x -= all->center[0] - WIN_X / 2; 
-			all->matrix[line][pos].y -= all->center[1] - WIN_Y / 2; 
+			if (how == 1)
+				all->matrix[line][pos].color += 0x010105;
+			else
+				all->matrix[line][pos].color -= 0x010105;
 			pos++;
 		}
 		line++;
@@ -75,7 +39,7 @@ void	go(t_all *all)
 	WIN_PTR = mlx_new_window(MLX_PTR, WIN_X, WIN_Y, "FDF vkarpova");
 	move_to_center(all);
 	draw(all);
-	mlx_hook(WIN_PTR, 2, 5, event, all);
+	mlx_hook(WIN_PTR, 2, 5, event1, all);
 	mlx_loop(MLX_PTR);
 }
 
@@ -118,14 +82,14 @@ void	make_line(t_all *all, t_matrix *c1, t_matrix *c2)
 		while (c1->y > c2->y ? xy[1] >= c2->y : xy[1] <= c2->y)
 		{
 			xy[0] = ((xy[1] - c1->y) / (c1->y - c2->y) * (c1->x - c2->x) + c1->x);
-			mlx_pixel_put(MLX_PTR, WIN_PTR, xy[0], xy[1], 0x00FFFFFF);
+			mlx_pixel_put(MLX_PTR, WIN_PTR, xy[0], xy[1], c1->color);
 			c2->y > c1->y ? xy[1]++ : xy[1]--;
 		}
 	else
 		while (c1->x > c2->x ? xy[0] >= c2->x : xy[0] <= c2->x)
 		{
 			xy[1] = ((xy[0] - c1->x) / (c1->x - c2->x) * (c1->y - c2->y) + c1->y);
-			mlx_pixel_put(MLX_PTR, WIN_PTR, xy[0], xy[1], 0x00FFFFFF);
+			mlx_pixel_put(MLX_PTR, WIN_PTR, xy[0], xy[1], c1->color);
 			c2->x > c1->x ? xy[0]++ : xy[0]--;
 		}
 }
