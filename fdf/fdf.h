@@ -37,8 +37,16 @@ typedef struct		s_matrix
 	int			color;
 }				t_matrix;
 
+typedef struct		s_mouse
+{
+	char		press;
+	int			x;
+	int			y;
+}					t_mouse;
+
 typedef struct		s_all
 {
+	t_mouse		mouse;
 	void		*mlx_ptr;
 	void		*win_ptr;
 	t_matrix	**matrix;
@@ -53,17 +61,29 @@ void		error_msg(int code);
 int			ft_words(char *s, char c);
 t_all		*read_file(char **argv, t_all *all, int fd);
 t_matrix	*save_coords(char *line, int line_nb, t_all *all);
+void		note(t_all *all);
 void		go(t_all *all);
 void		draw(t_all *all);
-void		print(t_matrix **matrix, int max_x, int max_y);
+int			event1(int key, t_all *all);
+void		event2(int key, t_all *all);
+void		event3(int key, t_all *all);
+void		event4(int key, t_all *all);
+void		event5(int key, t_all *all);
+void		z_moves(t_all *all, int how);
+void		color_move(t_all *all, int how);
 void		make_line(t_all *all, t_matrix *dot1, t_matrix *dot2);
 int			event(int key, t_all *all);
 void		zoom(t_all *all, int how);
 void		move(t_all *all, int where);
 void		move_to_center(t_all *all);
 void		find_center(t_all *all);
-void		rotat_x(t_all *all, int how);
-void		rotat_y(t_all *all, int how);
-void		rotat_z(t_all *all, int how);
+void		rotat_x(t_all *all, double angle);
+void		rotat_y(t_all *all, double angle);
+void		rotat_z(t_all *all, double angle);
 void		move_to(t_all *all, int where);
 int			ft_atoi_base(const char *str, int str_base);
+int			main(int argc, char **argv);
+int			mouse_press(int button, int x, int y, t_all *all);
+int			mouse_release(int button, int x, int y, t_all *all);
+int			mouse_move(int x, int y, t_all *all);
+int			x_close(t_all *all);

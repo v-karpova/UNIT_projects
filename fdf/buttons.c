@@ -12,30 +12,24 @@
 
 #include "fdf.h"
 
-int		event1(int key, t_all *all)
+int			event1(int key, t_all *all)
 {
-	if (key == 12)	 // Q zoom--
+	if (key == 12)
 	{
 		mlx_clear_window(MLX_PTR, WIN_PTR);
 		zoom(all, -1);
 		draw(all);
 	}
-	else if (key == 14)	 // E zoom++
+	else if (key == 14)
 	{
 		mlx_clear_window(MLX_PTR, WIN_PTR);
 		zoom(all, 1);
 		draw(all);
 	}
-	else if (key == 18)	 //  1 - rot x 1
+	else if (key == 18)
 	{
 		mlx_clear_window(MLX_PTR, WIN_PTR);
-		rotat_x(all, 1);
-		draw(all);
-	}
-	else if (key == 19)	 //  2 - rot x  -1
-	{
-		mlx_clear_window(MLX_PTR, WIN_PTR);
-		rotat_x(all, -1);
+		rotat_x(all, 0.1);
 		draw(all);
 	}
 	else
@@ -43,88 +37,96 @@ int		event1(int key, t_all *all)
 	return (0);
 }
 
-int		event2(int key, t_all *all)
+void		event2(int key, t_all *all)
 {
-	if (key == 20)	 // 3 - rot y 1
+	if (key == 20)
 	{
 		mlx_clear_window(MLX_PTR, WIN_PTR);
-		rotat_y(all, 1);
+		rotat_y(all, 0.1);
 		draw(all);
 	}
-	else if (key == 21)	 //  4 - rot y -1
+	else if (key == 21)
 	{
 		mlx_clear_window(MLX_PTR, WIN_PTR);
-		rotat_y(all, -1);
+		rotat_y(all, -0.1);
 		draw(all);
 	}
-	else if (key == 22)	 // 5 - rot z 1
+	else if (key == 22)
 	{
 		mlx_clear_window(MLX_PTR, WIN_PTR);
-		rotat_z(all, 1);
-		draw(all);
-	}
-	else if (key == 23)	 //  6 - rot z -1
-	{
-		mlx_clear_window(MLX_PTR, WIN_PTR);
-		rotat_z(all, -1);
+		rotat_z(all, 0.1);
 		draw(all);
 	}
 	else
 		event3(key, all);
-	return (0);
 }
 
-int		event3(int key, t_all *all)
+void		event3(int key, t_all *all)
 {
-	if (key == 123)	 // <- left
+	if (key == 123)
 	{
 		mlx_clear_window(MLX_PTR, WIN_PTR);
 		move(all, -1);
 		draw(all);
 	}
-	else if (key == 124)	 // -> right
+	else if (key == 124)
 	{
 		mlx_clear_window(MLX_PTR, WIN_PTR);
 		move(all, 1);
 		draw(all);
 	}
-	else if (key == 126)	 // up move
+	else if (key == 126)
 	{
 		mlx_clear_window(MLX_PTR, WIN_PTR);
 		move(all, 2);
 		draw(all);
 	}
-	else if (key == 125)	 // down move
-	{
-		mlx_clear_window(MLX_PTR, WIN_PTR);
-		move(all, -2);
-		draw(all);
-	}
 	else
 		event4(key, all);
-	return (0);
 }
 
-int		event4(int key, t_all *all)
+void		event4(int key, t_all *all)
 {
-	if (key == 53)         // ECS
+	if (key == 53)
 	{
 		mlx_clear_window(MLX_PTR, WIN_PTR);
 		free(all);
 		exit(0);
 	}
-	else if (key == 8)	 //  C - color change -
-	{
-		mlx_clear_window(MLX_PTR, WIN_PTR);
-		color_move(all, -1);
-		draw(all);
-	}
-	else if (key == 9)	 //  C - color change +
+	else if (key == 9)
 	{
 		mlx_clear_window(MLX_PTR, WIN_PTR);
 		color_move(all, 1);
 		draw(all);
 	}
+	else if (key == 23)
+	{
+		mlx_clear_window(MLX_PTR, WIN_PTR);
+		rotat_z(all, -0.1);
+		draw(all);
+	}
+	else
+		event5(key, all);
+}
 
-	return (0);
+void		event5(int key, t_all *all)
+{
+	if (key == 125)
+	{
+		mlx_clear_window(MLX_PTR, WIN_PTR);
+		move(all, -2);
+		draw(all);
+	}
+	else if (key == 8)
+	{
+		mlx_clear_window(MLX_PTR, WIN_PTR);
+		color_move(all, -1);
+		draw(all);
+	}
+	else if (key == 19)
+	{
+		mlx_clear_window(MLX_PTR, WIN_PTR);
+		rotat_x(all, -0.1);
+		draw(all);
+	}
 }

@@ -40,7 +40,7 @@ t_matrix	*save_coords(char *line, int line_nb, t_all *all)
 	return (coords);
 }
 
-void	move_to(t_all *all, int where)
+void		move_to(t_all *all, int where)
 {
 	int		line;
 	int		pos;
@@ -68,7 +68,7 @@ void	move_to(t_all *all, int where)
 	}
 }
 
-void	find_center(t_all *all)
+void		find_center(t_all *all)
 {
 	int		line;
 	int		pos;
@@ -86,7 +86,7 @@ void	find_center(t_all *all)
 	all->center[2] = all->matrix[line - 1][pos - 1].z / 2;
 }
 
-void	move_to_center(t_all *all)
+void		move_to_center(t_all *all)
 {
 	int		line;
 	int		pos;
@@ -98,8 +98,8 @@ void	move_to_center(t_all *all)
 		pos = 0;
 		while (pos < MAX_X)
 		{
-			all->matrix[line][pos].x -= all->center[0] - WIN_X / 2; 
-			all->matrix[line][pos].y -= all->center[1] - WIN_Y / 2; 
+			all->matrix[line][pos].x -= all->center[0] - WIN_X / 2;
+			all->matrix[line][pos].y -= all->center[1] - WIN_Y / 2;
 			pos++;
 		}
 		line++;

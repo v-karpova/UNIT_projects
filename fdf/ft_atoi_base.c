@@ -21,9 +21,11 @@ int		ft_isblank(char c)
 
 int		isvalid(char c, int base)
 {
-	char	digits[17] = "0123456789abcdef";
-	char	digits2[17] = "0123456789ABCDEF";
+	char	*digits;
+	char	*digits2;
 
+	digits = ft_strdup("0123456789abcdef");
+	digits2 = ft_strdup("0123456789ABCDEF");
 	while (base--)
 		if (digits[base] == c || digits2[base] == c)
 			return (1);

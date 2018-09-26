@@ -12,14 +12,12 @@
 
 #include "fdf.h"
 
-/*clear && gcc ./libft-*.c main.c moves.c work.c get_next_line.c draw.c buttons.c -lmlx -framework OpenGL -framework AppKit */
-
 void	error_msg(int code)
 {
 	if (code == 1)
 		ft_putstr("usage: ./fdf your_map\n");
 	else if (code == 2)
-		ft_putstr("invalid map, try add another one\n");	
+		ft_putstr("invalid map, try add another one\n");
 }
 
 int		ft_words(char *s, char c)
@@ -52,7 +50,7 @@ t_all	*read_file(char **argv, t_all *all, int fd)
 	int			check;
 
 	line_nb = 0;
-	check = 0;	
+	check = 0;
 	coords = (t_matrix **)malloc(sizeof(t_matrix*) * all->map_y);
 	while (get_next_line(fd, &line) > 0)
 	{
@@ -60,7 +58,7 @@ t_all	*read_file(char **argv, t_all *all, int fd)
 		if (line_nb != 0 && check != all->map_x)
 		{
 			all->map_x = -1;
-			break;
+			break ;
 		}
 		coords[line_nb] = save_coords(line, line_nb, all);
 		free(line);
