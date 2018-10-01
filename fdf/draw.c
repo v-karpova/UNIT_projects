@@ -17,19 +17,17 @@ void	color_move(t_all *all, int how)
 	int		line;
 	int		pos;
 
-	line = 0;
-	while (line < MAX_Y)
+	line = -1;
+	while (++line < MAX_Y)
 	{
-		pos = 0;
-		while (pos < MAX_X)
+		pos = -1;
+		while (++pos < MAX_X)
 		{
 			if (how == 1)
 				all->matrix[line][pos].color += 0x010110;
 			else
 				all->matrix[line][pos].color -= 0x010110;
-			pos++;
 		}
-		line++;
 	}
 }
 
@@ -77,24 +75,23 @@ void	draw(t_all *all)
 
 	note(all);
 	line = -1;
+	if (MAX_Y == 1 && MAX_X == 1)
+		mlx_pixel_put(MLX_PTR, WIN_PTR, all->matrix[0][0].x,
+						all->matrix[0][0].y, all->matrix[0][0].color);
 	while (++line < MAX_Y)
 	{
 		pos = -1;
 		while (++pos < MAX_X - 1)
-		{
 			make_line(all, &all->matrix[line][pos],
 						&all->matrix[line][pos + 1]);
-		}
 	}
 	line = -1;
 	while (++line < MAX_Y - 1)
 	{
 		pos = -1;
 		while (++pos < MAX_X)
-		{
 			make_line(all, &all->matrix[line][pos],
 						&all->matrix[line + 1][pos]);
-		}
 	}
 }
 

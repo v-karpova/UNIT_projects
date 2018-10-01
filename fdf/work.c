@@ -12,32 +12,32 @@
 
 #include "fdf.h"
 
-t_matrix	*save_coords(char *line, int line_nb, t_all *all)
+void		make_free_m(t_matrix **arr)
 {
-	t_matrix	*coords;
-	char		**split;
-	char		**split2;
-	int			i;
+	int i;
 
-	split = ft_strsplit(line, ' ');
 	i = 0;
-	coords = (t_matrix *)malloc(sizeof(t_matrix) * all->map_x);
-	while (split[i] != '\0')
+	while (arr[i])
 	{
-		coords[i].x = i * BIGGER;
-		coords[i].y = line_nb * BIGGER;
-		coords[i].z = (double)ft_atoi_base(split[i], 10) * BIGGER;
-		if (ft_strchr(split[i], ','))
-		{
-			split2 = ft_strsplit(split[i], ',');
-			coords[i].color = ft_atoi_base(split2[1] + 2, 16);
-			// ft_freearr(atoi);
-		}
-		else
-			coords[i].color = 0xF00E8FF;
+		free(arr[i]);
 		i++;
 	}
-	return (coords);
+	free(arr);
+	arr = NULL;
+}
+
+void		make_free(char **arr)
+{
+	int i;
+
+	i = 0;
+	while (arr[i])
+	{
+		ft_strdel(&arr[i]);
+		i++;
+	}
+	free(arr);
+	arr = NULL;
 }
 
 void		move_to(t_all *all, int where)
@@ -46,11 +46,11 @@ void		move_to(t_all *all, int where)
 	int		pos;
 
 	find_center(all);
-	line = 0;
-	while (line < MAX_Y)
+	line = -1;
+	while (++line < MAX_Y)
 	{
-		pos = 0;
-		while (pos < MAX_X)
+		pos = -1;
+		while (++pos < MAX_X)
 		{
 			if (where == -1)
 			{
@@ -62,9 +62,7 @@ void		move_to(t_all *all, int where)
 				all->matrix[line][pos].x += (WIN_X / 2);
 				all->matrix[line][pos].y += (WIN_Y / 2);
 			}
-			pos++;
 		}
-		line++;
 	}
 }
 
@@ -73,13 +71,12 @@ void		find_center(t_all *all)
 	int		line;
 	int		pos;
 
-	line = 0;
-	while (line < MAX_Y)
+	line = -1;
+	while (++line < MAX_Y)
 	{
 		pos = 0;
 		while (pos < MAX_X)
 			pos++;
-		line++;
 	}
 	all->center[0] = all->matrix[line - 1][pos - 1].x / 2;
 	all->center[1] = all->matrix[line - 1][pos - 1].y / 2;

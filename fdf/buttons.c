@@ -90,6 +90,7 @@ void		event4(int key, t_all *all)
 	if (key == 53)
 	{
 		mlx_clear_window(MLX_PTR, WIN_PTR);
+		make_free_m(all->matrix);
 		free(all);
 		exit(0);
 	}

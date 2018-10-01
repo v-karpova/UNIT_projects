@@ -12,15 +12,17 @@
 
 #include "fdf.h"
 
-void	error_msg(int code)
+void		error_msg(int code)
 {
 	if (code == 1)
 		ft_putstr("usage: ./fdf your_map\n");
 	else if (code == 2)
 		ft_putstr("invalid map, try add another one\n");
+	else if (code == 3)
+		ft_putstr("invalid file! usage: ./fdf your_map\n");
 }
 
-int		ft_words(char *s, char c)
+int			ft_words(char *s, char c)
 {
 	int		w;
 	int		i;
@@ -42,7 +44,36 @@ int		ft_words(char *s, char c)
 	return (w);
 }
 
-t_all	*read_file(char **argv, t_all *all, int fd)
+t_matrix	*save_coords(char *line, int line_nb, t_all *all)
+{
+	t_matrix	*coords;
+	char		**split;
+	char		**split2;
+	int			i;
+
+	split = ft_strsplit(line, ' ');
+	i = 0;
+	coords = (t_matrix *)malloc(sizeof(t_matrix) * all->map_x);
+	while (split[i] != '\0')
+	{
+		coords[i].x = i * BIGGER;
+		coords[i].y = line_nb * BIGGER;
+		coords[i].z = (double)ft_atoi(split[i]) * BIGGER;
+		if (ft_strchr(split[i], ','))
+		{
+			split2 = ft_strsplit(split[i], ',');
+			coords[i].color = ft_atoi_base_16(split2[1] + 2);
+			make_free(split2);
+		}
+		else
+			coords[i].color = 0xF00E8FF;
+		i++;
+	}
+	make_free(split);
+	return (coords);
+}
+
+t_all		*read_file(t_all *all, int fd)
 {
 	char		*line;
 	int			line_nb;
@@ -71,7 +102,7 @@ t_all	*read_file(char **argv, t_all *all, int fd)
 	return (all);
 }
 
-int		main(int argc, char **argv)
+int			main(int argc, char **argv)
 {
 	t_all	*all;
 	int		fd;
@@ -80,8 +111,13 @@ int		main(int argc, char **argv)
 	{
 		all = (t_all *)malloc(sizeof(t_all));
 		fd = open(argv[1], O_RDONLY);
-		all = read_file(argv, all, fd);
-		if (all->map_x == -1)
+		if (fd < 0 || read(fd, 0, 0))
+		{
+			error_msg(3);
+			return (0);
+		}
+		all = read_file(all, fd);
+		if (all->map_x == -1 || all->map_x == 0)
 		{
 			error_msg(2);
 			return (0);

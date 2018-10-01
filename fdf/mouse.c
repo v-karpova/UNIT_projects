@@ -22,6 +22,7 @@ int		mouse_press(int button, int x, int y, t_all *all)
 		event1(12, all);
 	else if (button == 1)
 		all->mouse.press = 1;
+	x = y;
 	return (0);
 }
 
