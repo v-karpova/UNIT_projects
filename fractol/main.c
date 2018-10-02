@@ -18,8 +18,8 @@ void	now_do(t_all *all, int n)
 		mandelbrot(all);
 	else if (n == 2)
 		julia(all);
-	// else if (n == 3)
-	// 	THIRD(all);
+	else if (n == 3)
+	 	THIRD(all);
 
 
 	mlx_put_image_to_window(MLX_PTR, WIN_PTR, IMG_PTR, 0, 0);

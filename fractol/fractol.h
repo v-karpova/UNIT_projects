@@ -91,7 +91,7 @@ int		x_close(t_all *all);
 int		name_check(char **argv);
 void	mandelbrot(t_all *all);
 void	julia(t_all *all);
-
+void	THIRD(t_all *all);
 
 
 #endif
