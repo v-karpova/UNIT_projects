@@ -12,22 +12,29 @@
 
 #include "fractol.h"
 
+void	pixel_put_img(t_all *win, int x, int y, int colour)
+{
+	if (x < WIN_X || y < WIN_Y)
+	{
+		colour = mlx_get_color_value(win->mlx_ptr, colour);
+		ft_memcpy(win->img + 4 * WIN_X * y + x * 4, &colour, sizeof(int));
+	}
+}
+
 void	mandelbrot(t_all *all)
 {
-	int		y;
-	int		x;
 	int		n;
 
-	y = -1;
-	while (++y < IMAGE_H)
+	all->y = -1;
+	while (++all->y < IMAGE_H)
 	{
-		CI = MAX_I - y * I_FACTOR; 
-		// CI = (y - IMAGE_H / 2) / (0.5 * IMAGE_H);
-		x = -1;
-		while (++x < IMAGE_W)
+		CI = MAX_I - all->y * I_FACTOR; 
+		// CI = (all->y - IMAGE_H / 2) / (0.5 * IMAGE_H);
+		all->x = -1;
+		while (++all->x < IMAGE_W)
 		{
-			CR = MIN_R + x * R_FACTOR;
-			// CR = 1.5 * (x - IMAGE_W / 2) / (0.5 * IMAGE_W);
+			CR = MIN_R + all->x * R_FACTOR;
+			// CR = 1.5 * (all->x - IMAGE_W / 2) / (0.5 * IMAGE_W);
 			ZR = CR;
 			ZI = CI;
 			INSIDE = 1;
@@ -45,25 +52,23 @@ void	mandelbrot(t_all *all)
 				ZR = ZR2 - ZI2 + CR;
 			}
 			if (INSIDE == 1)
-				mlx_pixel_put(MLX_PTR, WIN_PTR, x, y, 0xFFF0000);
+				pixel_put_img(all, all->x, all->y, 0xFFF0000);//all->colour * i);
 		}
 	}
 }
 
 void	julia(t_all *all)
 {
-	int		y;
-	int		x;
 	int		n;
 	
-	y = -1;
-	while (++y < IMAGE_H)
+	all->y = -1;
+	while (++all->y < IMAGE_H)
 	{
-		CI = (y - IMAGE_H / 2) / (0.5 * IMAGE_H);
-		x = -1;
-		while (++x < IMAGE_W)
+		CI = (all->y - IMAGE_H / 2) / (0.5 * IMAGE_H);
+		all->x = -1;
+		while (++all->x < IMAGE_W)
 		{
-			CR = 1.5 * (x - IMAGE_W / 2) / (0.5 * IMAGE_W);
+			CR = 1.5 * (all->x - IMAGE_W / 2) / (0.5 * IMAGE_W);
 			ZR = CR;
 			ZI = CI;
 			INSIDE = 1;
@@ -81,7 +86,7 @@ void	julia(t_all *all)
 				ZR = ZR2 - ZI2 + CR_J;
 			}
 			if (INSIDE == 1)
-				mlx_pixel_put(MLX_PTR, WIN_PTR, x, y, 0xFFF0000);
+				pixel_put_img(all, all->x, all->y, 0xFFF0000);//all->colour * i);
 		}
 	}
 }

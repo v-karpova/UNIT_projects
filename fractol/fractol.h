@@ -17,6 +17,7 @@
 # define WIN_Y 1300
 # define MLX_PTR all->mlx_ptr
 # define WIN_PTR all->win_ptr
+# define IMG_PTR all->img_ptr
 # define MIN_R -2.0
 # define MAX_R 1.0
 # define MIN_I -1.2
@@ -56,6 +57,20 @@ typedef struct	s_all
 	t_mouse		mouse;
 	void		*mlx_ptr;
 	void		*win_ptr;
+	void		*img_ptr;
+
+	int			x;
+	int			y;
+
+	int			size_line;
+	int			bpp;
+	int			endian;
+	int			movex;
+	int			movey;
+	int			colour;
+	int			zoom;
+	char		*img;
+
 	double		c_r;
 	double		c_i;
 	double		Z_r;
