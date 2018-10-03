@@ -13,22 +13,22 @@
 #ifndef FT_FRACTOL_H
 # define FT_FRACTOL_H
 
-# define WIN_X 2550
-# define WIN_Y 1300
+# define WIN_X 1000
+# define WIN_Y 1000
 # define MLX_PTR all->mlx_ptr
 # define WIN_PTR all->win_ptr
 # define IMG_PTR all->img_ptr
-# define MIN_R -2.0
-# define MAX_R 1.0
-# define MIN_I -1.2
-# define MAX_I MIN_I + (MAX_R - MIN_R) * IMAGE_H / IMAGE_W
-# define IMAGE_H 500 // ???
-# define IMAGE_W 500 // ???
-# define R_FACTOR (MAX_R - MIN_R) / (IMAGE_W - 1)
-# define I_FACTOR (MAX_I - MIN_I) / (IMAGE_H - 1)
+# define MV_X all->move_x
+# define MV_Y all->move_y
+# define ZOOM all->zoom
+# define COLOR all->color
+# define IMG_H WIN_Y
+# define IMG_W WIN_Y
 # define CR_J -0.7
 # define CI_J 0.27015
-# define MAX_ITER 30
+# define CR_R -0.123
+# define CI_R 0.745
+# define MAX_ITER 100
 
 # define CR all->c_r
 # define CI all->c_i
@@ -41,6 +41,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
+ #include <pthread.h>
 # include "math.h"
 # include "mlx.h"
 # include "libft/libft.h"
@@ -58,19 +59,19 @@ typedef struct	s_all
 	void		*mlx_ptr;
 	void		*win_ptr;
 	void		*img_ptr;
-
-	int			x;
-	int			y;
-
+	double		x;
+	double		y;
+	double		y_max;
+	double		x_max;
+	int			fract;
 	int			size_line;
 	int			bpp;
 	int			endian;
-	int			movex;
-	int			movey;
-	int			colour;
-	int			zoom;
+	int			move_x;
+	int			move_y;
+	int			color;
+	double		zoom;
 	char		*img;
-
 	double		c_r;
 	double		c_i;
 	double		Z_r;
@@ -82,6 +83,9 @@ typedef struct	s_all
 }				t_all;
 
 void	go(t_all *all, int n);
+void	now_do(t_all *all, int n);
+void	set_img(t_all *all, int n);
+void	pixel_put_img(t_all *all, int x, int y, int color);
 int		main(int argc, char **argv);
 int		event(int key, t_all *all);
 int		mouse_press(int button, int x, int y, t_all *all);
@@ -89,9 +93,14 @@ int		mouse_release(int button, int x, int y, t_all *all);
 int		mouse_move(int x, int y, t_all *all);
 int		x_close(t_all *all);
 int		name_check(char **argv);
-void	mandelbrot(t_all *all);
+void	*mandelbrot(void *v);
+void	mandelbrot_thread(t_all *all);
 void	julia(t_all *all);
-void	THIRD(t_all *all);
-
+void	forever(t_all *all);
+void	rabbit(t_all *all);
+void	heart(t_all *all);
+void	tricorn(t_all *all);
+void	mandelbar(t_all *all);
+void	snowflake(t_all *all);
 
 #endif

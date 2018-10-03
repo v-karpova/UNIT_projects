@@ -12,115 +12,32 @@
 
 #include "fractol.h"
 
-void	pixel_put_img(t_all *win, int x, int y, int colour)
+void	pixel_put_img(t_all *all, int x, int y, int color)
 {
 	if (x < WIN_X || y < WIN_Y)
 	{
-		colour = mlx_get_color_value(win->mlx_ptr, colour);
-		ft_memcpy(win->img + 4 * WIN_X * y + x * 4, &colour, sizeof(int));
+		color = mlx_get_color_value(MLX_PTR, color);
+		ft_memcpy(all->img + 4 * WIN_X * y + x * 4, &color, sizeof(int));
 	}
 }
 
-void	mandelbrot(t_all *all)
+void	now_do(t_all *all, int n)
 {
-	int		n;
-
-	all->y = -1;
-	while (++all->y < IMAGE_H)
-	{
-		//CI = MAX_I - all->y * I_FACTOR; 
-		CI = (all->y - IMAGE_H / 2) / (0.5 * IMAGE_H);
-		all->x = -1;
-		while (++all->x < IMAGE_W)
-		{
-			//CR = MIN_R + all->x * R_FACTOR;
-			CR = 1.5 * (all->x - IMAGE_W / 2) / (0.5 * IMAGE_W);
-			ZR = CR;
-			ZI = CI;
-			INSIDE = 1;
-			n = -1;
-			while (++n < MAX_ITER)
-			{
-				ZR2 = ZR * ZR;
-				ZI2 = ZI * ZI;
-				if (ZR2 + ZI2 > 4)
-				{
-					INSIDE = 0;
-					break;
-				}
-				ZI = 2 * ZR * ZI + CI;
-				ZR = ZR2 - ZI2 + CR;
-			}
-			if (INSIDE == 1)
-				pixel_put_img(all, all->x, all->y, 0xFFF0000);//all->colour * i);
-		}
-	}
+	if (n == 1)
+		mandelbrot_thread(all);
+	else if (n == 2)
+		julia(all);
+	else if (n == 3)
+	 	forever(all);
+	else if (n == 4)
+	 	rabbit(all);
+	else if (n == 5)
+	 	heart(all);
+	else if (n == 6)
+	 	tricorn(all);
+	else if (n == 7)
+	 	mandelbar(all);
+	else if (n == 8)
+	 	snowflake(all);
 }
 
-void	julia(t_all *all)
-{
-	int		n;
-	
-	all->y = -1;
-	while (++all->y < IMAGE_H)
-	{
-		CI = (all->y - IMAGE_H / 2) / (0.5 * IMAGE_H);
-		all->x = -1;
-		while (++all->x < IMAGE_W)
-		{
-			CR = 1.5 * (all->x - IMAGE_W / 2) / (0.5 * IMAGE_W);
-			ZR = CR;
-			ZI = CI;
-			INSIDE = 1;
-			n = -1;
-			while (++n < MAX_ITER)
-			{
-				ZR2 = ZR * ZR;
-				ZI2 = ZI * ZI;
-				if (ZR2 + ZI2 > 4)
-				{
-					INSIDE = 0;
-					break;
-				}
-				ZI = 2 * ZR * ZI + CI_J;
-				ZR = ZR2 - ZI2 + CR_J;
-			}
-			if (INSIDE == 1)
-				pixel_put_img(all, all->x, all->y, 0xFFF0000);//all->colour * i);
-		}
-	}
-}
-
-void	THIRD(t_all *all)
-{
-	int		n;
-	
-	all->y = -1;
-	while (++all->y < IMAGE_H)
-	{
-		CI = (all->y - IMAGE_H / 2) / (0.5 * IMAGE_H);
-		all->x = -1;
-		while (++all->x < IMAGE_W)
-		{
-			CR = 1.5 * (all->x - IMAGE_W / 2) / (0.5 * IMAGE_W);
-			ZR = CR;
-			ZI = CI;
-			INSIDE = 1;
-			n = -1;
-			while (++n < MAX_ITER)
-			{
-				ZR2 = ZR * ZR;
-				ZI2 = ZI * ZI;
-				if (ZR2 + ZI2 > 4)
-				{
-					INSIDE = 0;
-					break;
-				}
-				ZI = 2 * ZR * ZI;
-				ZR = ZR2 - ZI2 - 1;
-			}
-			if (INSIDE == 1)
-				pixel_put_img(all, all->x, all->y, 0xFFF0000);//all->colour * i);
-		}
-	}
-}
