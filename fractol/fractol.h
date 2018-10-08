@@ -18,8 +18,12 @@
 # define MLX_PTR all->mlx_ptr
 # define WIN_PTR all->win_ptr
 # define IMG_PTR all->img_ptr
+# define X all->x
+# define Y all->y
 # define MV_X all->move_x
 # define MV_Y all->move_y
+# define CH_Y all->change_y
+# define CH_X all->change_x
 # define ZOOM all->zoom
 # define COLOR all->color
 # define IMG_H WIN_Y
@@ -49,8 +53,8 @@
 typedef struct	s_mouse
 {
 	char		press;
-	int			x;
-	int			y;
+	double		x;
+	double		y;
 }				t_mouse;
 
 typedef struct	s_all
@@ -67,8 +71,10 @@ typedef struct	s_all
 	int			size_line;
 	int			bpp;
 	int			endian;
-	int			move_x;
-	int			move_y;
+	double		move_x;
+	double		move_y;
+	double		change_y;
+	double		change_x;
 	int			color;
 	double		zoom;
 	char		*img;
@@ -93,6 +99,7 @@ int		mouse_release(int button, int x, int y, t_all *all);
 int		mouse_move(int x, int y, t_all *all);
 int		x_close(t_all *all);
 int		name_check(char **argv);
+
 void	*mandelbrot(void *v);
 void	mandelbrot_thread(t_all *all);
 void	julia(t_all *all);

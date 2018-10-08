@@ -42,6 +42,8 @@ void	rabbit(t_all *all)
 			}
 			if (INSIDE == 1)
 				pixel_put_img(all, all->x, all->y, 0xFFF0000);
+			else
+				pixel_put_img(all, all->x, all->y, 0);
 		}
 	}
 }

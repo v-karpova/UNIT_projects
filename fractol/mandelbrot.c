@@ -39,14 +39,14 @@ void	*mandelbrot(void *v)
 	int		n;
 
 	all = (t_all *)v;
-	all->y = -1;
-	while (++all->y < IMG_H)
+	Y = -1;
+	while (++Y < IMG_H)
 	{
-		CI = 1.5 * (all->y - IMG_H / 2) / (0.5 * ZOOM * IMG_H) + MV_Y;
-		all->x = -1;
-		while (++(all->x) < all->x_max)
+		CI = 1.5 * (Y + CH_Y - IMG_H / 2) / (0.5 * ZOOM * IMG_H) + MV_Y;
+		X = -1;
+		while (++(X) < all->x_max)
 		{
-			CR = 1.5 * (all->x - IMG_W / 2) / (0.5 * ZOOM * IMG_W) + MV_X;
+			CR = 1.5 * (X + CH_X - IMG_W / 2) / (0.5 * ZOOM * IMG_W) + MV_X;
 			ZR = CR;
 			ZI = CI;
 			INSIDE = 1;
@@ -64,9 +64,9 @@ void	*mandelbrot(void *v)
 				ZR = ZR2 - ZI2 + CR;
 			}
 			if (INSIDE == 1)
-				pixel_put_img(all, all->x, all->y, COLOR * n);
+				pixel_put_img(all, X, Y, COLOR * n);
 			else
-				pixel_put_img(all, all->x, all->y, 0);
+				pixel_put_img(all, X, Y, 0);
 		}
 	}
 	return (all);

@@ -21,6 +21,8 @@ void	set_img(t_all *all, int n)
 	all->color = 0xFFFFFFF;
 	all->move_x = 0;
 	all->move_y = 0;
+	all->change_x = 0;
+	all->change_y = 0;
 	all->zoom = 1;
 	all->img =
 	mlx_get_data_addr(IMG_PTR, &all->bpp, &all->size_line, &all->endian);
@@ -40,6 +42,8 @@ void	go(t_all *all, int n)
 	mlx_hook(WIN_PTR, 4, 1L << 2, mouse_press, all);
 	mlx_hook(WIN_PTR, 5, 1L << 3, mouse_release, all);
 	mlx_hook(WIN_PTR, 6, 1L << 13, mouse_move, all);
+	// mlx_hook(WIN_PTR, 6, 0, mand, all);
+
 	mlx_hook(WIN_PTR, 17, 1L << 17, x_close, all);
 	mlx_loop(MLX_PTR);
 }
