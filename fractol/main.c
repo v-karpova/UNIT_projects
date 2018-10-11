@@ -14,6 +14,13 @@
 
 void	set_img(t_all *all, int n)
 {
+ 	all->x = -1;
+	all->y = -1;
+	all->mouse_x = -0.7;
+	all->mouse_y = 0.27015;
+	// all->jr = -0.7;
+	// all->ji = 0.27015;
+	all->iter = 1000;
 	all->fract = n;
 	all->size_line = WIN_X;
 	all->bpp = 32;
@@ -25,7 +32,7 @@ void	set_img(t_all *all, int n)
 	all->change_y = 0;
 	all->zoom = 1;
 	all->img =
-	mlx_get_data_addr(IMG_PTR, &all->bpp, &all->size_line, &all->endian);
+	mlx_get_data_addr(all->img_ptr, &all->bpp, &all->size_line, &all->endian);
 }
 
 void	go(t_all *all, int n)
@@ -33,6 +40,7 @@ void	go(t_all *all, int n)
 	MLX_PTR = mlx_init();
 	WIN_PTR = mlx_new_window(MLX_PTR, WIN_X, WIN_Y, "FRACTOL vkarpova");
 	IMG_PTR = mlx_new_image(MLX_PTR, WIN_X, WIN_Y);
+
 	set_img(all, n);
 	all->img = 
 	mlx_get_data_addr(IMG_PTR, &all->bpp, &all->size_line, &all->endian);
@@ -42,8 +50,6 @@ void	go(t_all *all, int n)
 	mlx_hook(WIN_PTR, 4, 1L << 2, mouse_press, all);
 	mlx_hook(WIN_PTR, 5, 1L << 3, mouse_release, all);
 	mlx_hook(WIN_PTR, 6, 1L << 13, mouse_move, all);
-	// mlx_hook(WIN_PTR, 6, 0, mand, all);
-
 	mlx_hook(WIN_PTR, 17, 1L << 17, x_close, all);
 	mlx_loop(MLX_PTR);
 }
@@ -83,11 +89,13 @@ void	usage()
 }
 
 int		main(int argc, char **argv)
-{	
-	t_all	*all;
-	int		fd;
+{
+	t_all		*all;
+	t_mouse		*m;
+	int			fd;
 
 	all = (t_all *)malloc(sizeof(t_all));
+	m = (t_mouse *)malloc(sizeof(t_mouse));
 	if (argc == 2 && (name_check(argv)) >= 1)
 		go(all, (name_check(argv)));
 	else

@@ -12,24 +12,74 @@
 
 #include "fractol.h"
 
-void	julia(t_all *all)
+// void	julia_thread(t_all *all)
+// {
+// 	t_all	thread[4];
+// 	int			i;
+
+// 	i = -1;
+// 	while (++i < 4)
+// 	{
+// 		thread[i] = *all;
+// 		thread[i].n = i;
+// 		pthread_create(&thread[i].p, NULL, julia, &thread[i]);
+// 	}
+// 	i = -1;
+// 	while (++i < 4)
+// 		pthread_join(thread[i].p, NULL);
+// 	mlx_put_image_to_window(all->mlx_ptr, all->win_ptr, all->img_ptr, 0, 0);
+// }
+
+
+void	julia_thread(t_all *all)
 {
-	int		n;
-	
-	all->y = -1;
-	while (++all->y < IMG_H)
+	int			i;
+	t_all		new_all[8];
+	pthread_t	thread[8];
+
+	i = -1;
+	while (++i < 8)
 	{
-		CI = 1.5 * (all->y - IMG_H / 2) / (0.5 * ZOOM * IMG_H) + MV_Y;
-		all->x = -1;
-		while (++all->x < IMG_W)
+		ft_memcpy((void *)&new_all[i], (void *)all, sizeof(t_all));
+		new_all[i].x = (WIN_X / 8) * i;
+		new_all[i].x_max = (WIN_X / 8) * (i + 1);
+	}
+	i = -1;
+	while (++i < 8)
+		pthread_create(&thread[i], NULL, julia, &new_all[i]);
+	i = -1;
+	while (++i < 8)
+		pthread_join(thread[i], NULL);
+	mlx_put_image_to_window(MLX_PTR, WIN_PTR, IMG_PTR, 0, 0);
+}
+
+
+void	*julia(void *v)
+{
+	t_all		*all;
+	int			n;
+	double		tmp_x;
+
+
+	all = (t_all *)v;
+	tmp_x = X;
+	CI = all->mouse_y;
+	CR = all->mouse_x;
+	while (++Y < IMG_H)
+	{
+		
+		X = tmp_x;
+		while (X++ < all->x_max)
 		{
-			CR = 1.5 * (all->x - IMG_W / 2) / (0.5 * ZOOM * IMG_W) + MV_X;
-			ZR = CR;
-			ZI = CI;
+			ZI = 1.5 * (Y- IMG_H / 2) / (0.5 * ZOOM * IMG_H) + MV_Y;
+			ZR = 1.5 * (X- IMG_W / 2) / (0.5 * ZOOM * IMG_W) + MV_X;
+			// ZR = CR;
+			// ZI = CI;
 			INSIDE = 1;
 			n = -1;
 			while (++n < MAX_ITER)
 			{
+				
 				ZR2 = ZR * ZR;
 				ZI2 = ZI * ZI;
 				if (ZR2 + ZI2 > 4)
@@ -37,13 +87,15 @@ void	julia(t_all *all)
 					INSIDE = 0;
 					break;
 				}
-				ZI = 2 * ZR * ZI + CI_J;
-				ZR = ZR2 - ZI2 + CR_J;
+				ZI = 2 * ZR * ZI + CI;
+				ZR = ZR2 - ZI2 + CR;
+				if (INSIDE == 1)
+					pixel_put_img(all, X, Y, COLOR * n);
+				else
+					pixel_put_img(all, X, Y, 0);
 			}
-			if (INSIDE == 1)
-				pixel_put_img(all, all->x, all->y, 0xFFF0000);
-			else
-				pixel_put_img(all, all->x, all->y, 0);
+
 		}
 	}
+	return (all);
 }

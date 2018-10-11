@@ -13,8 +13,8 @@
 #ifndef FT_FRACTOL_H
 # define FT_FRACTOL_H
 
-# define WIN_X 1000
-# define WIN_Y 1000
+# define WIN_X 700
+# define WIN_Y 700
 # define MLX_PTR all->mlx_ptr
 # define WIN_PTR all->win_ptr
 # define IMG_PTR all->img_ptr
@@ -28,12 +28,13 @@
 # define COLOR all->color
 # define IMG_H WIN_Y
 # define IMG_W WIN_Y
-# define CR_J -0.7
-# define CI_J 0.27015
+// # define CR_J -0.7
+// # define CI_J 0.27015
+// # define JI all->ji
+// # define JR all->jr
 # define CR_R -0.123
 # define CI_R 0.745
-# define MAX_ITER 100
-
+# define MAX_ITER all->iter
 # define CR all->c_r
 # define CI all->c_i
 # define ZR all->Z_r
@@ -45,10 +46,11 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
- #include <pthread.h>
+# include <pthread.h>
 # include "math.h"
 # include "mlx.h"
 # include "libft/libft.h"
+
 
 typedef struct	s_mouse
 {
@@ -65,8 +67,12 @@ typedef struct	s_all
 	void		*img_ptr;
 	double		x;
 	double		y;
-	double		y_max;
+	double		mouse_x;
+	double		mouse_y;
+
+	// double		y_max;
 	double		x_max;
+	int			iter;
 	int			fract;
 	int			size_line;
 	int			bpp;
@@ -84,8 +90,11 @@ typedef struct	s_all
 	double		Z_i;
 	double		Z_r2;
 	double		Z_i2;
+	double		ji;
+	double		jr;
 	int			isInside;
-
+	// pthread_t	p;
+	// int			n;
 }				t_all;
 
 void	go(t_all *all, int n);
@@ -99,15 +108,23 @@ int		mouse_release(int button, int x, int y, t_all *all);
 int		mouse_move(int x, int y, t_all *all);
 int		x_close(t_all *all);
 int		name_check(char **argv);
-
+int		jul(t_all *all);
 void	*mandelbrot(void *v);
 void	mandelbrot_thread(t_all *all);
-void	julia(t_all *all);
-void	forever(t_all *all);
-void	rabbit(t_all *all);
-void	heart(t_all *all);
-void	tricorn(t_all *all);
-void	mandelbar(t_all *all);
-void	snowflake(t_all *all);
+void	julia_thread(t_all *all);
+void	forever_thread(t_all *all);
+void	heart_thread(t_all *all);
+void	mandelbar_thread(t_all *all);
+void	rabbit_thread(t_all *all);
+void	snowflake_thread(t_all *all);
+void	tricorn_thread(t_all *all);
+void	*julia(void *v);
+void	*forever(void *v);
+void	*rabbit(void *v);
+void	*heart(void *v);
+void	*tricorn(void *v);
+void	*mandelbar(void *v);
+void	*snowflake(void *v);
+int		color(t_all *all, int iter);
 
 #endif

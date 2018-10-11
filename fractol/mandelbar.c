@@ -12,18 +12,38 @@
 
 #include "fractol.h"
 
-void	mandelbar(t_all *all)
+void	mandelbar_thread(t_thread *p)
 {
+	t_thread	thread[4];
+	int			i;
+
+	i = -1;
+	while (++i < 4)
+	{
+		thread[i].a = p->a;
+		thread[i].n = i;
+		pthread_create(&thread[i].p, NULL, mandelbar, &thread[i]);
+	}
+	i = -1;
+	while (++i < 4)
+		pthread_join(thread[i].p, NULL);
+	// mlx_put_image_to_window(MLX_PTR, WIN_PTR, IMG_PTR, 0, 0);
+}
+
+void	*mandelbar(void *v)
+{
+	t_thread	*p;
 	int		n;
 	
-	all->y = -1;
-	while (++all->y < IMG_H)
+	p = (t_thread *)v;
+	Y = -1;
+	while (++Y < IMG_H)
 	{
-		CI = 1.5 * (all->y - IMG_H / 2) / (0.5 * ZOOM * IMG_H) + MV_Y;
-		all->x = -1;
-		while (++all->x < IMG_W)
+		CI = 1.5 * (Y - IMG_H / 2) / (0.5 * ZOOM * IMG_H) + MV_Y;
+		X = -1;
+		while (++X < IMG_W)
 		{
-			CR = 1.5 * (all->x - IMG_W / 2) / (0.5 * ZOOM * IMG_W) + MV_X;
+			CR = 1.5 * (X - IMG_W / 2) / (0.5 * ZOOM * IMG_W) + MV_X;
 			ZR = CR;
 			ZI = CI;
 			INSIDE = 1;
@@ -37,13 +57,14 @@ void	mandelbar(t_all *all)
 					INSIDE = 0;
 					break;
 				}
-				ZI = (3 * ZR2 - ZI2) * ZI + CI;
-				ZR = - (ZR2 - (3 * ZI2)) * ZR + CR;
+				ZI = (3 * ZR2 - ZI2) * ZI + CI + JI;
+				ZR = - (ZR2 - (3 * ZI2)) * ZR + CR + JR;
 			}
 			if (INSIDE == 1)
-				pixel_put_img(all, all->x, all->y, 0xFFF0000);
+				pixel_put_img(p, X, Y, COLOR * n);
 			else
-				pixel_put_img(all, all->x, all->y, 0);
+				pixel_put_img(p, X, Y, 0);
 		}
 	}
+	return (p);
 }

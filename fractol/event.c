@@ -56,6 +56,7 @@ int			event(int key, t_all *all)
 		mlx_clear_window(MLX_PTR, WIN_PTR);
 		ZOOM *= 1.1;
 		now_do(all, all->fract);
+		
 	}
 	else if (key == 8)
 	{
@@ -69,45 +70,42 @@ int			event(int key, t_all *all)
 
 int		mouse_press(int button, int x, int y, t_all *all)
 {
+	mlx_clear_window(MLX_PTR, WIN_PTR);
 	if (button == 2)
+	{
+		all->mouse.press = 1;
 		event(8, all);
+	}
 	if (button == 4)
 		event(69, all);
 	if (button == 5)
 		event(78, all);
 	if (button == 1)
+	{
 		all->mouse.press = 1;
-	
+		event(49, all);
+	}
+	mlx_put_image_to_window(MLX_PTR, WIN_PTR, IMG_PTR, 0, 0);
 	x = y;
 	return (0);
 }
 
 int		mouse_release(int button, int x, int y, t_all *all)
 {
-	if (button == 1)
+	if (button == 1 || button == 2)
 		all->mouse.press = 0;
-	// MV_X += all->mouse.x / 200;
-	// MV_Y += all->mouse.y / 200;
 	x = y;
 	return (0);
 }
 
 int		mouse_move(int x, int y, t_all *all)
 {
-	double		save_x;
-	double		save_y;
 
-	save_x = all->mouse.x;
-	save_y = all->mouse.y;
-	// mlx_clear_window(MLX_PTR, WIN_PTR);
-	// if (all->mouse.y > save_x)
-		// CH_Y += 1;
-	// if (all->mouse.x > save_x)
-	// 	CH_X += 0.5;
-
+	all->mouse_y = 1.5 * (y - IMG_H / 2) / (0.5 * ZOOM * IMG_H) + MV_Y;
+	all->mouse_x = 1.5 * (x - IMG_W / 2) / (0.5 * ZOOM * IMG_W) + MV_X;
+	mlx_clear_window(MLX_PTR, WIN_PTR);
 	now_do(all, all->fract);
-	all->mouse.x = 0;
-	all->mouse.y = 0;
+	// mlx_put_image_to_window(MLX_PTR, WIN_PTR, IMG_PTR, 0, 0);
 	return (0);
 }
 

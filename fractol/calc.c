@@ -16,28 +16,27 @@ void	pixel_put_img(t_all *all, int x, int y, int color)
 {
 	if (x < WIN_X || y < WIN_Y)
 	{
-		color = mlx_get_color_value(MLX_PTR, color);
+		color = mlx_get_color_value(all->mlx_ptr, color);
 		ft_memcpy(all->img + 4 * WIN_X * y + x * 4, &color, sizeof(int));
 	}
 }
 
 void	now_do(t_all *all, int n)
 {
-	if (n == 1)
-		mandelbrot_thread(all);
-	else if (n == 2)
-		julia(all);
-	else if (n == 3)
-	 	forever(all);
-	else if (n == 4)
-	 	rabbit(all);
-	else if (n == 5)
-	 	heart(all);
-	else if (n == 6)
-	 	tricorn(all);
-	else if (n == 7)
-	 	mandelbar(all);
-	else if (n == 8)
-	 	snowflake(all);
+	// if (n == 1)
+	// 	mandelbrot_thread(all);
+	if (n == 2)
+		julia_thread(all);
+	// else if (n == 3)
+	//  	forever_thread(all);
+	// else if (n == 4)
+	//  	rabbit_thread(all);
+	// else if (n == 5)
+	//  	heart_thread(all);
+	// else if (n == 6)
+	//  	tricorn_thread(all);
+	// else if (n == 7)
+	//  	mandelbar_thread(all);
+	// else if (n == 8)
+	//  	snowflake_thread(all);
 }
-

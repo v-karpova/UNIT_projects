@@ -12,41 +12,38 @@
 
 #include "fractol.h"
 
-void	mandelbrot_thread(t_all *all)
+void	mandelbrot_thread(t_thread *p)
 {
+	t_thread	thread[4];
 	int			i;
-	t_all		new_all[8];
-	pthread_t	thread[8];
 
 	i = -1;
-	while (++i < 8)
+	while (++i < 4)
 	{
-		ft_memcpy((void *)&new_all[i], (void *)all, sizeof(t_all));
-		new_all[i].x = WIN_X/8 * i;
-		new_all[i].x_max = WIN_X/8 * (i + 1);
+		thread[i].a = p->a;
+		thread[i].n = i;
+		pthread_create(&thread[i].p, NULL, mandelbrot, &thread[i]);
 	}
 	i = -1;
-	while (++i < 8)
-		pthread_create(&thread[i], NULL, mandelbrot, &new_all[i]);
-	i = -1;
-	while (++i < 8)
-		pthread_join(thread[i], NULL);
+	while (++i < 4)
+		pthread_join(thread[i].p, NULL);
+	// mlx_put_image_to_window(MLX_PTR, WIN_PTR, IMG_PTR, 0, 0);
 }
 
 void	*mandelbrot(void *v)
 {
-	t_all	*all;
+	t_thread	*p;
 	int		n;
 
-	all = (t_all *)v;
+	p = (t_thread *)v;
 	Y = -1;
 	while (++Y < IMG_H)
 	{
-		CI = 1.5 * (Y + CH_Y - IMG_H / 2) / (0.5 * ZOOM * IMG_H) + MV_Y;
+		CI = 1.5 * (Y - IMG_H / 2) / (0.5 * ZOOM * IMG_H) + MV_Y;
 		X = -1;
-		while (++(X) < all->x_max)
+		while (++(X) < IMG_W)
 		{
-			CR = 1.5 * (X + CH_X - IMG_W / 2) / (0.5 * ZOOM * IMG_W) + MV_X;
+			CR = 1.5 * (X - IMG_W / 2) / (0.5 * ZOOM * IMG_W) + MV_X;
 			ZR = CR;
 			ZI = CI;
 			INSIDE = 1;
@@ -60,14 +57,14 @@ void	*mandelbrot(void *v)
 					INSIDE = 0;
 					break;
 				}
-				ZI = 2 * ZR * ZI + CI;
-				ZR = ZR2 - ZI2 + CR;
+				ZI = 2 * ZR * ZI + CI + JI;
+				ZR = ZR2 - ZI2 + CR + JR;
 			}
 			if (INSIDE == 1)
-				pixel_put_img(all, X, Y, COLOR * n);
+				pixel_put_img(p, X, Y, COLOR * n);
 			else
-				pixel_put_img(all, X, Y, 0);
+				pixel_put_img(p, X, Y, 0);
 		}
 	}
-	return (all);
+	return (p);
 }
