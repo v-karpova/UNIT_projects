@@ -54,9 +54,8 @@ int			event(int key, t_all *all)
 	else if (key == 69)
 	{
 		mlx_clear_window(MLX_PTR, WIN_PTR);
-		ZOOM *= 1.1;
+		ZOOM *= 1.1;		
 		now_do(all, all->fract);
-		
 	}
 	else if (key == 8)
 	{
@@ -64,28 +63,41 @@ int			event(int key, t_all *all)
 		COLOR += 1000;
 		now_do(all, all->fract);
 	}
+	else if (key == 49)
+	{
+		all->stop = 1;
+		mlx_clear_window(MLX_PTR, WIN_PTR);
+	}	
+	else if (key == 36)
+	{
+		all->stop = 0;
+		mlx_clear_window(MLX_PTR, WIN_PTR);
+	}
 	mlx_put_image_to_window(MLX_PTR, WIN_PTR, IMG_PTR, 0, 0);
 	return (0);
 }
 
 int		mouse_press(int button, int x, int y, t_all *all)
 {
-	mlx_clear_window(MLX_PTR, WIN_PTR);
 	if (button == 2)
 	{
 		all->mouse.press = 1;
 		event(8, all);
 	}
 	if (button == 4)
+	{
 		event(69, all);
+	}
 	if (button == 5)
+	{
 		event(78, all);
+	}
 	if (button == 1)
 	{
 		all->mouse.press = 1;
 		event(49, all);
 	}
-	mlx_put_image_to_window(MLX_PTR, WIN_PTR, IMG_PTR, 0, 0);
+	// mlx_put_image_to_window(MLX_PTR, WIN_PTR, IMG_PTR, 0, 0);
 	x = y;
 	return (0);
 }
@@ -94,18 +106,20 @@ int		mouse_release(int button, int x, int y, t_all *all)
 {
 	if (button == 1 || button == 2)
 		all->mouse.press = 0;
-	x = y;
+	x = 0;
+	y = 0;
 	return (0);
 }
 
 int		mouse_move(int x, int y, t_all *all)
 {
-
-	all->mouse_y = 1.5 * (y - IMG_H / 2) / (0.5 * ZOOM * IMG_H) + MV_Y;
-	all->mouse_x = 1.5 * (x - IMG_W / 2) / (0.5 * ZOOM * IMG_W) + MV_X;
-	mlx_clear_window(MLX_PTR, WIN_PTR);
-	now_do(all, all->fract);
-	// mlx_put_image_to_window(MLX_PTR, WIN_PTR, IMG_PTR, 0, 0);
+	if (all->stop == 0)
+	{
+		mlx_clear_window(MLX_PTR, WIN_PTR);
+		all->mouse_y = (1.5 * (y - IMG_H / 2) / (0.5 * ZOOM * IMG_H) + MV_Y);
+		all->mouse_x = (1.5 * (x - IMG_W / 2) / (0.5 * ZOOM * IMG_W) + MV_X);
+		now_do(all, all->fract);
+	}
 	return (0);
 }
 

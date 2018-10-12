@@ -13,13 +13,15 @@
 #ifndef FT_FRACTOL_H
 # define FT_FRACTOL_H
 
-# define WIN_X 700
-# define WIN_Y 700
+# define WIN_X 1000
+# define WIN_Y 1000
 # define MLX_PTR all->mlx_ptr
 # define WIN_PTR all->win_ptr
 # define IMG_PTR all->img_ptr
 # define X all->x
 # define Y all->y
+# define X1 all->x1
+# define Y1 all->y1
 # define MV_X all->move_x
 # define MV_Y all->move_y
 # define CH_Y all->change_y
@@ -28,12 +30,6 @@
 # define COLOR all->color
 # define IMG_H WIN_Y
 # define IMG_W WIN_Y
-// # define CR_J -0.7
-// # define CI_J 0.27015
-// # define JI all->ji
-// # define JR all->jr
-# define CR_R -0.123
-# define CI_R 0.745
 # define MAX_ITER all->iter
 # define CR all->c_r
 # define CI all->c_i
@@ -41,7 +37,6 @@
 # define ZI all->Z_i
 # define ZR2 all->Z_r2
 # define ZI2 all->Z_i2
-# define INSIDE all->isInside
 
 # include <unistd.h>
 # include <stdlib.h>
@@ -50,7 +45,6 @@
 # include "math.h"
 # include "mlx.h"
 # include "libft/libft.h"
-
 
 typedef struct	s_mouse
 {
@@ -67,10 +61,11 @@ typedef struct	s_all
 	void		*img_ptr;
 	double		x;
 	double		y;
+	double		x1;
+	double		y1;
+	int			stop;
 	double		mouse_x;
 	double		mouse_y;
-
-	// double		y_max;
 	double		x_max;
 	int			iter;
 	int			fract;
@@ -79,8 +74,6 @@ typedef struct	s_all
 	int			endian;
 	double		move_x;
 	double		move_y;
-	double		change_y;
-	double		change_x;
 	int			color;
 	double		zoom;
 	char		*img;
@@ -93,8 +86,6 @@ typedef struct	s_all
 	double		ji;
 	double		jr;
 	int			isInside;
-	// pthread_t	p;
-	// int			n;
 }				t_all;
 
 void	go(t_all *all, int n);
@@ -126,5 +117,6 @@ void	*tricorn(void *v);
 void	*mandelbar(void *v);
 void	*snowflake(void *v);
 int		color(t_all *all, int iter);
+void	note(t_all *all);
 
 #endif

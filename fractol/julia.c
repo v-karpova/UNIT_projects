@@ -12,25 +12,6 @@
 
 #include "fractol.h"
 
-// void	julia_thread(t_all *all)
-// {
-// 	t_all	thread[4];
-// 	int			i;
-
-// 	i = -1;
-// 	while (++i < 4)
-// 	{
-// 		thread[i] = *all;
-// 		thread[i].n = i;
-// 		pthread_create(&thread[i].p, NULL, julia, &thread[i]);
-// 	}
-// 	i = -1;
-// 	while (++i < 4)
-// 		pthread_join(thread[i].p, NULL);
-// 	mlx_put_image_to_window(all->mlx_ptr, all->win_ptr, all->img_ptr, 0, 0);
-// }
-
-
 void	julia_thread(t_all *all)
 {
 	int			i;
@@ -60,41 +41,31 @@ void	*julia(void *v)
 	int			n;
 	double		tmp_x;
 
-
 	all = (t_all *)v;
 	tmp_x = X;
 	CI = all->mouse_y;
 	CR = all->mouse_x;
-	while (++Y < IMG_H)
+	while (Y++ < IMG_H)
 	{
-		
 		X = tmp_x;
 		while (X++ < all->x_max)
 		{
-			ZI = 1.5 * (Y- IMG_H / 2) / (0.5 * ZOOM * IMG_H) + MV_Y;
-			ZR = 1.5 * (X- IMG_W / 2) / (0.5 * ZOOM * IMG_W) + MV_X;
-			// ZR = CR;
-			// ZI = CI;
-			INSIDE = 1;
+			ZI = 1.5 * (Y - IMG_H / 2) / (0.5 * ZOOM * IMG_H) + MV_Y;
+			ZR = 1.5 * (X - IMG_W / 2) / (0.5 * ZOOM * IMG_W) + MV_X;
 			n = -1;
 			while (++n < MAX_ITER)
 			{
-				
 				ZR2 = ZR * ZR;
 				ZI2 = ZI * ZI;
 				if (ZR2 + ZI2 > 4)
-				{
-					INSIDE = 0;
 					break;
-				}
-				ZI = 2 * ZR * ZI + CI;
-				ZR = ZR2 - ZI2 + CR;
-				if (INSIDE == 1)
-					pixel_put_img(all, X, Y, COLOR * n);
-				else
+				ZI = 2 * ZR * ZI + 0.27015 + CI;
+				ZR = ZR2 - ZI2 - 0.7 + CR;
+				if (n == MAX_ITER)
 					pixel_put_img(all, X, Y, 0);
+				else
+					pixel_put_img(all, X, Y, COLOR * n);
 			}
-
 		}
 	}
 	return (all);

@@ -14,23 +14,22 @@
 
 void	set_img(t_all *all, int n)
 {
- 	all->x = -1;
-	all->y = -1;
-	all->mouse_x = -0.7;
-	all->mouse_y = 0.27015;
-	// all->jr = -0.7;
-	// all->ji = 0.27015;
-	all->iter = 1000;
+ 	all->x = 0;
+	all->y = 0;
+ 	all->x1 = 0;
+	all->y1 = 0;
+	all->stop = 0;
+	all->mouse_y = 0;
+	all->mouse_x = 0;
+	all->iter = 100;
 	all->fract = n;
 	all->size_line = WIN_X;
 	all->bpp = 32;
 	all->endian = 0;
-	all->color = 0xFFFFFFF;
+	all->color = 0xF9DFF00;
 	all->move_x = 0;
 	all->move_y = 0;
-	all->change_x = 0;
-	all->change_y = 0;
-	all->zoom = 1;
+	all->zoom = 0.5;
 	all->img =
 	mlx_get_data_addr(all->img_ptr, &all->bpp, &all->size_line, &all->endian);
 }
@@ -45,7 +44,6 @@ void	go(t_all *all, int n)
 	all->img = 
 	mlx_get_data_addr(IMG_PTR, &all->bpp, &all->size_line, &all->endian);
 	now_do(all, n);
-	mlx_put_image_to_window(MLX_PTR, WIN_PTR, IMG_PTR, 0, 0);
 	mlx_hook(WIN_PTR, 2, 5, event, all);
 	mlx_hook(WIN_PTR, 4, 1L << 2, mouse_press, all);
 	mlx_hook(WIN_PTR, 5, 1L << 3, mouse_release, all);
@@ -78,14 +76,14 @@ int		name_check(char **argv)
 void	usage()
 {
 	ft_putendl("usage: ./fractol [choose fractol]");
-	ft_putendl("1) M for Mandelbrot");
-	ft_putendl("2) J for Julia");
-	ft_putendl("3) F for Forever");
-	ft_putendl("4) R for Rabbit");
-	ft_putendl("5) H for Heart");
-	ft_putendl("6) T for Tricorn");
-	ft_putendl("7) MB for Mandelbar");
-	ft_putendl("8) S for Snowflake");
+	ft_putendl("1) type M for Mandelbrot");
+	ft_putendl("2) type J for Julia");
+	ft_putendl("3) type F for Forever");
+	ft_putendl("4) type R for Rabbit");
+	ft_putendl("5) type H for Heart");
+	ft_putendl("6) type T for Tricorn");
+	ft_putendl("7) type MB for Mandelbar");
+	ft_putendl("8) type S for Snowflake");
 }
 
 int		main(int argc, char **argv)
