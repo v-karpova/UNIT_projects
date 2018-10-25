@@ -12,13 +12,18 @@
 
 NAME = fractol
 
-SRC = buttons.c\
-		draw.c\
-		ft_at.c\
+SRC = calc.c\
+		event.c\
+		forever.c\
+		heart.c\
+		julia.c\
 		main.c\
-		moves.c\
+		mandelbar.c\
+		mandelbrot.c\
 		mouse.c\
-		work.c
+		rabbit.c\
+		snowflake.c\
+		tricorn.c\
 
 OBJ = $(SRC:.c=.o)
 
@@ -28,7 +33,7 @@ all:	$(NAME)
 
 $(NAME):
 	make -C libft re
-	gcc -Wall -Wextra -Werror -lmlx -framework OpenGL -framework AppKit $(SRC) libft/libft.a -o $(NAME) -lm
+	gcc -Wall -Wextra -Werror -lmlx -framework OpenGL -framework AppKit -pthread $(SRC) libft/libft.a -o $(NAME) -lm
 
 %.o:%.c $(HEAD)
 	gcc -o $@ -c $< -I ./libft/

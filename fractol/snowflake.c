@@ -34,14 +34,14 @@ void	snowflake_thread(t_all *all)
 	mlx_put_image_to_window(MLX_PTR, WIN_PTR, IMG_PTR, 0, 0);
 }
 
-
 void	*snowflake(void *v)
 {
 	t_all		*all;
-	int			n;
 	double		tmp_x;
 
 	all = (t_all *)v;
+	if (COLOR == 0xF9DFF00)
+		COLOR = 0xF69E5F1;
 	tmp_x = X;
 	while (++Y < IMG_H)
 	{
@@ -49,24 +49,31 @@ void	*snowflake(void *v)
 		X = tmp_x;
 		while (X++ < all->x_max)
 		{
-			CR = 1.5 * (X +  - IMG_W / 2) / (0.5 * ZOOM * IMG_W) + MV_X;
-			ZR = CR;
-			ZI = CI;
-			n = -1;
-			while (++n < MAX_ITER)
-			{
-				ZR2 = ZR * ZR;
-				ZI2 = ZI * ZI;
-				if (ZR2 + ZI2 > 4)
-					break;
-				ZI = -4 * ZR * ZI * (ZR2 - ZI2) + CI;
-				ZR = ZR2 * ZR2 + ZI2 * ZI2 - 6 * ZR2 * ZI2 + CR;
-				if (n == MAX_ITER)
-					pixel_put_img(all, X, Y, 0);
-				else
-					pixel_put_img(all, X, Y, COLOR * n);
-			}
+			CR = 1.5 * (X - IMG_W / 2) / (0.5 * ZOOM * IMG_W) + MV_X;
+			c_snowflake(all, CI, CR);
 		}
 	}
 	return (all);
+}
+
+void	c_snowflake(t_all *all, double ci, double cr)
+{
+	int		n;
+
+	ZI = ci;
+	ZR = cr;
+	n = -1;
+	while (++n <= MAX_ITER)
+	{
+		ZR2 = ZR * ZR;
+		ZI2 = ZI * ZI;
+		if (ZR2 + ZI2 > 4)
+			break ;
+		ZI = -4 * ZR * ZI * (ZR2 - ZI2) + ci;
+		ZR = ZR2 * ZR2 + ZI2 * ZI2 - 6 * ZR2 * ZI2 + cr;
+		if (n == MAX_ITER)
+			pixel_put_img(all, X, Y, 0);
+		else
+			pixel_put_img(all, X, Y, COLOR * n);
+	}
 }

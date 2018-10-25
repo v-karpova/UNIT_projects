@@ -12,7 +12,6 @@
 
 #include "fractol.h"
 
-
 void	heart_thread(t_all *all)
 {
 	int			i;
@@ -35,39 +34,44 @@ void	heart_thread(t_all *all)
 	mlx_put_image_to_window(MLX_PTR, WIN_PTR, IMG_PTR, 0, 0);
 }
 
-
 void	*heart(void *v)
 {
 	t_all		*all;
-	int			n;
 	double		tmp_x;
 
 	all = (t_all *)v;
+	if (COLOR == 0xF9DFF00)
+		COLOR = 0xFFFA5F4;
 	tmp_x = X;
-	CI = all->mouse_y;
-	CR = all->mouse_x;
+	CI = all->mouse_y + 1;
+	CR = all->mouse_x - 1;
 	while (Y++ < IMG_H)
 	{
 		X = tmp_x;
 		while (X++ < all->x_max)
-		{
-			ZI = 1.5 * (Y- IMG_H / 2) / (0.5 * ZOOM * IMG_H) + MV_Y;
-			ZR = 1.5 * (X- IMG_W / 2) / (0.5 * ZOOM * IMG_W) + MV_X;
-			n = -1;
-			while (++n < MAX_ITER)
-			{
-				ZR2 = ZR * ZR;
-				ZI2 = ZI * ZI;
-				if (ZR2 + ZI2 > 4)
-					break;
-				ZI = 2 * fabs(ZR) * ZI + CI;
-				ZR = ZR2 - ZI2 + CR;
-				if (n == MAX_ITER)
-					pixel_put_img(all, X, Y, 0);
-				else
-					pixel_put_img(all, X, Y, COLOR * n);
-			}
-		}
+			c_heart(all, CI, CR);
 	}
 	return (all);
+}
+
+void	c_heart(t_all *all, double ci, double cr)
+{
+	int		n;
+
+	ZI = 1.5 * (Y - IMG_H / 2) / (0.5 * ZOOM * IMG_H) + MV_Y;
+	ZR = 1.5 * (X - IMG_W / 2) / (0.5 * ZOOM * IMG_W) + MV_X;
+	n = -1;
+	while (++n <= MAX_ITER)
+	{
+		ZR2 = ZR * ZR;
+		ZI2 = ZI * ZI;
+		if (ZR2 + ZI2 > 4)
+			break ;
+		ZI = 2 * fabs(ZR) * ZI + ci;
+		ZR = ZR2 - ZI2 + cr;
+		if (n == MAX_ITER)
+			pixel_put_img(all, X, Y, 0);
+		else
+			pixel_put_img(all, X, Y, COLOR * n);
+	}
 }

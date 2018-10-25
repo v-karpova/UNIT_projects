@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vkarpova <vkarpova@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/01 17:34:28 by vkarpova          #+#    #+#             */
-/*   Updated: 2018/10/01 17:34:31 by vkarpova         ###   ########.fr       */
+/*   Created: 2018/10/16 19:46:19 by vkarpova          #+#    #+#             */
+/*   Updated: 2018/10/16 19:46:48 by vkarpova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,8 @@
 # define IMG_PTR all->img_ptr
 # define X all->x
 # define Y all->y
-# define X1 all->x1
-# define Y1 all->y1
 # define MV_X all->move_x
 # define MV_Y all->move_y
-# define CH_Y all->change_y
-# define CH_X all->change_x
 # define ZOOM all->zoom
 # define COLOR all->color
 # define IMG_H WIN_Y
@@ -33,10 +29,10 @@
 # define MAX_ITER all->iter
 # define CR all->c_r
 # define CI all->c_i
-# define ZR all->Z_r
-# define ZI all->Z_i
-# define ZR2 all->Z_r2
-# define ZI2 all->Z_i2
+# define ZR all->z_r
+# define ZI all->z_i
+# define ZR2 all->z_r2
+# define ZI2 all->z_i2
 
 # include <unistd.h>
 # include <stdlib.h>
@@ -79,44 +75,53 @@ typedef struct	s_all
 	char		*img;
 	double		c_r;
 	double		c_i;
-	double		Z_r;
-	double		Z_i;
-	double		Z_r2;
-	double		Z_i2;
+	double		z_r;
+	double		z_i;
+	double		z_r2;
+	double		z_i2;
 	double		ji;
 	double		jr;
-	int			isInside;
 }				t_all;
 
-void	go(t_all *all, int n);
-void	now_do(t_all *all, int n);
-void	set_img(t_all *all, int n);
-void	pixel_put_img(t_all *all, int x, int y, int color);
-int		main(int argc, char **argv);
-int		event(int key, t_all *all);
-int		mouse_press(int button, int x, int y, t_all *all);
-int		mouse_release(int button, int x, int y, t_all *all);
-int		mouse_move(int x, int y, t_all *all);
-int		x_close(t_all *all);
-int		name_check(char **argv);
-int		jul(t_all *all);
-void	*mandelbrot(void *v);
-void	mandelbrot_thread(t_all *all);
-void	julia_thread(t_all *all);
-void	forever_thread(t_all *all);
-void	heart_thread(t_all *all);
-void	mandelbar_thread(t_all *all);
-void	rabbit_thread(t_all *all);
-void	snowflake_thread(t_all *all);
-void	tricorn_thread(t_all *all);
-void	*julia(void *v);
-void	*forever(void *v);
-void	*rabbit(void *v);
-void	*heart(void *v);
-void	*tricorn(void *v);
-void	*mandelbar(void *v);
-void	*snowflake(void *v);
-int		color(t_all *all, int iter);
-void	note(t_all *all);
+void			pixel_put_img(t_all *all, int x, int y, int color);
+void			now_do(t_all *all, int n);
+int				event(int key, t_all *all);
+void			event1(int key, t_all *all);
+void			event2(int key, t_all *all);
+void			event3(int key, t_all *all);
+void			event4(int key, t_all *all);
+void			forever_thread(t_all *all);
+void			*forever(void *v);
+void			c_forever(t_all *all);
+void			heart_thread(t_all *all);
+void			*heart(void *v);
+void			c_heart(t_all *all, double ci, double cr);
+void			julia_thread(t_all *all);
+void			*julia(void *v);
+void			c_julia(t_all *all);
+void			set_img(t_all *all, int n);
+void			go(t_all *all, int n);
+int				name_check(char **argv);
+void			usage(int o);
+int				main(int argc, char **argv);
+void			mandelbar_thread(t_all *all);
+void			*mandelbar(void *v);
+void			c_mandelbar(t_all *all, double ci, double cr);
+void			mandelbrot_thread(t_all *all);
+void			*mandelbrot(void *v);
+void			c_mandelbrot(t_all *all, double ci, double cr);
+int				mouse_press(int button, int x, int y, t_all *all);
+int				mouse_release(int button, int x, int y, t_all *all);
+int				mouse_move(int x, int y, t_all *all);
+int				x_close(t_all *all);
+void			rabbit_thread(t_all *all);
+void			*rabbit(void *v);
+void			c_rabbit(t_all *all);
+void			snowflake_thread(t_all *all);
+void			*snowflake(void *v);
+void			c_snowflake(t_all *all, double ci, double cr);
+void			tricorn_thread(t_all *all);
+void			*tricorn(void *v);
+void			c_tricorn(t_all *all, double ci, double cr);
 
 #endif

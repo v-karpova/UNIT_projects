@@ -12,7 +12,6 @@
 
 #include "fractol.h"
 
-
 void	mandelbrot_thread(t_all *all)
 {
 	int			i;
@@ -35,39 +34,46 @@ void	mandelbrot_thread(t_all *all)
 	mlx_put_image_to_window(MLX_PTR, WIN_PTR, IMG_PTR, 0, 0);
 }
 
-
 void	*mandelbrot(void *v)
 {
 	t_all		*all;
-	int			n;
 	double		tmp_x;
 
 	all = (t_all *)v;
+	if (COLOR == 0xF9DFF00)
+		COLOR = 0xFC3E015;
 	tmp_x = X;
-	while (Y++ < IMG_H)
+	while (Y++ < WIN_Y)
 	{
-		CI = 1.5 * (Y - IMG_H / 2) / (0.5 * ZOOM * IMG_H) + MV_Y;
+		CI = 1.5 * (Y - WIN_Y / 2) / (0.5 * ZOOM * WIN_Y) + MV_Y;
 		X = tmp_x;
 		while (X++ < all->x_max)
 		{
-			CR = 1.5 * (X - IMG_W / 2) / (0.5 * ZOOM * IMG_W) + MV_X;
-			ZI = CI;
-			ZR = CR;
-			n = -1;
-			while (++n < MAX_ITER)
-			{
-				ZR2 = ZR * ZR;
-				ZI2 = ZI * ZI;
-				if (ZR2 + ZI2 > 4)
-					break;
-				ZI = 2 * ZR * ZI + CI;
-				ZR = ZR2 - ZI2 + CR;
-				if (n == MAX_ITER)
-					pixel_put_img(all, X, Y, 0);
-				else
-					pixel_put_img(all, X, Y, COLOR * n);
-			}
+			CR = 1.5 * (X - WIN_X / 2) / (0.5 * ZOOM * WIN_X) + MV_X;
+			c_mandelbrot(all, CI, CR);
 		}
 	}
 	return (all);
+}
+
+void	c_mandelbrot(t_all *all, double ci, double cr)
+{
+	int		n;
+
+	ZI = ci;
+	ZR = cr;
+	n = -1;
+	while (++n <= MAX_ITER)
+	{
+		ZR2 = ZR * ZR;
+		ZI2 = ZI * ZI;
+		if (ZR2 + ZI2 > 4)
+			break ;
+		ZI = 2 * ZR * ZI + ci;
+		ZR = ZR2 - ZI2 + cr;
+		if (n == MAX_ITER)
+			pixel_put_img(all, X, Y, 0);
+		else
+			pixel_put_img(all, X, Y, COLOR * n);
+	}
 }

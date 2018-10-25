@@ -12,7 +12,6 @@
 
 #include "fractol.h"
 
-
 void	rabbit_thread(t_all *all)
 {
 	int			i;
@@ -35,11 +34,9 @@ void	rabbit_thread(t_all *all)
 	mlx_put_image_to_window(MLX_PTR, WIN_PTR, IMG_PTR, 0, 0);
 }
 
-
 void	*rabbit(void *v)
 {
 	t_all		*all;
-	int			n;
 	double		tmp_x;
 
 	all = (t_all *)v;
@@ -50,24 +47,29 @@ void	*rabbit(void *v)
 	{
 		X = tmp_x;
 		while (X++ < all->x_max)
-		{
-			ZI = 1.5 * (Y- IMG_H / 2) / (0.5 * ZOOM * IMG_H) + MV_Y;
-			ZR = 1.5 * (X- IMG_W / 2) / (0.5 * ZOOM * IMG_W) + MV_X;
-			n = -1;
-			while (++n < MAX_ITER)
-			{
-				ZR2 = ZR * ZR;
-				ZI2 = ZI * ZI;
-				if (ZR2 + ZI2 > 4)
-					break;
-				ZI = 2 * ZR * ZI + 0.745 + CI;
-				ZR = ZR2 - ZI2 -0.123 + CR;
-				if (n == MAX_ITER)
-					pixel_put_img(all, X, Y, 0);
-				else
-					pixel_put_img(all, X, Y, COLOR * n);
-			}
-		}
+			c_rabbit(all);
 	}
 	return (all);
+}
+
+void	c_rabbit(t_all *all)
+{
+	int		n;
+
+	ZI = 1.5 * (Y - IMG_H / 2) / (0.5 * ZOOM * IMG_H) + MV_Y;
+	ZR = 1.5 * (X - IMG_W / 2) / (0.5 * ZOOM * IMG_W) + MV_X;
+	n = -1;
+	while (++n < MAX_ITER)
+	{
+		ZR2 = ZR * ZR;
+		ZI2 = ZI * ZI;
+		if (ZR2 + ZI2 > 4)
+			break ;
+		ZI = 2 * ZR * ZI + 0.745 + CI;
+		ZR = ZR2 - ZI2 - 0.123 + CR;
+		if (n == MAX_ITER)
+			pixel_put_img(all, X, Y, 0);
+		else
+			pixel_put_img(all, X, Y, COLOR * n);
+	}
 }

@@ -14,9 +14,9 @@
 
 void	set_img(t_all *all, int n)
 {
- 	all->x = 0;
+	all->x = 0;
 	all->y = 0;
- 	all->x1 = 0;
+	all->x1 = 0;
 	all->y1 = 0;
 	all->stop = 0;
 	all->mouse_y = 0;
@@ -39,10 +39,7 @@ void	go(t_all *all, int n)
 	MLX_PTR = mlx_init();
 	WIN_PTR = mlx_new_window(MLX_PTR, WIN_X, WIN_Y, "FRACTOL vkarpova");
 	IMG_PTR = mlx_new_image(MLX_PTR, WIN_X, WIN_Y);
-
 	set_img(all, n);
-	all->img = 
-	mlx_get_data_addr(IMG_PTR, &all->bpp, &all->size_line, &all->endian);
 	now_do(all, n);
 	mlx_hook(WIN_PTR, 2, 5, event, all);
 	mlx_hook(WIN_PTR, 4, 1L << 2, mouse_press, all);
@@ -73,8 +70,9 @@ int		name_check(char **argv)
 	return (0);
 }
 
-void	usage()
+void	usage(int o)
 {
+	o = 0;
 	ft_putendl("usage: ./fractol [choose fractol]");
 	ft_putendl("1) type M for Mandelbrot");
 	ft_putendl("2) type J for Julia");
@@ -90,13 +88,14 @@ int		main(int argc, char **argv)
 {
 	t_all		*all;
 	t_mouse		*m;
-	int			fd;
+	int			o;
 
+	o = 1;
 	all = (t_all *)malloc(sizeof(t_all));
 	m = (t_mouse *)malloc(sizeof(t_mouse));
 	if (argc == 2 && (name_check(argv)) >= 1)
 		go(all, (name_check(argv)));
 	else
-		usage();
+		usage(o);
 	return (0);
 }
