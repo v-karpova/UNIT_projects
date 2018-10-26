@@ -29,7 +29,7 @@ void	set_img(t_all *all)
 	all->size_line = WIN_X;
 	all->bpp = 32;
 	all->endian = 0;
-	// all->color = 0xF66E3FF;
+	all->color = 0xFFF0000;
 	all->zoom = 0.5;
 	all->img =
 	mlx_get_data_addr(IMG_PTR, &all->bpp, &all->size_line, &all->endian);
@@ -45,7 +45,7 @@ void	pixel_put_img(t_all *all, int x, int y, int color)
 	if (x < WIN_X && y < WIN_Y)
 	{
 		color = mlx_get_color_value(all->mlx_ptr, color);
-		ft_memcpy(all->img + 4 * WIN_X * y + x * 4, &all->sphere.color, sizeof(int));
+		ft_memcpy(all->img + 4 * WIN_X * y + x * 4, &color, sizeof(int));
 	}
 	all->img =
 	mlx_get_data_addr(all->img_ptr, &all->bpp, &all->size_line, &all->endian);
@@ -79,11 +79,11 @@ int		main(int argc, char **argv)
 
 	o = 1;
 	all = (t_all *)malloc(sizeof(t_all));
-	// m = (t_mouse *)malloc(sizeof(t_mouse));
-	vector = (t_vector *)malloc(sizeof(t_vector));
-	sphere = (t_sphere *)malloc(sizeof(t_sphere));
+	// // m = (t_mouse *)malloc(sizeof(t_mouse));
+	// vector = (t_vector *)malloc(sizeof(t_vector));
+	// sphere = (t_sphere *)malloc(sizeof(t_sphere));
 
-	if (argc == 2)
+	if (argc == 1)
 		go(all);
 	else
 		usage(o);

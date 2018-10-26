@@ -64,7 +64,7 @@ int		TraceRay(t_all *all, double t_min, double t_max)
 	}
 	if (closest_sphere == 0)
 		return (0xFFFFFFF);
-	return (0xF66E3FF);
+	return (all->sphere.color);
 }
 
 void	sphere(t_all *all)
@@ -76,16 +76,18 @@ void	sphere(t_all *all)
 	all->sphere.c.y = 0;
 	all->sphere.c.z = 5;
 	all->sphere.r = 2;
+	all->sphere.color = 0xFFFE100;
 
-	x = -WIN_X / 2;
+	x = -WIN_X / 2 - 1;
 	while(x++ < WIN_X / 2)
 	{
 		y = -WIN_Y / 2;
 		while (y++ < WIN_Y / 2)
 		{
 			CanvasToViewport(all, x, y);
-			all->sphere.color = TraceRay(all, 1, 100000);
-			pixel_put_img(all, x + WIN_X / 2, WIN_Y / 2 - y, all->sphere.color);
+			all->color = TraceRay(all, 1, 100000);
+			pixel_put_img(all, x + WIN_X / 2, WIN_Y / 2 - y, all->color);
+			
 		}
 	}
 	mlx_put_image_to_window(MLX_PTR, WIN_PTR, IMG_PTR, 0, 0);
