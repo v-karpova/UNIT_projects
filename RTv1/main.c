@@ -18,11 +18,38 @@ void	usage(int o)
 	ft_putendl("usage: ");
 }
 
+void	set_light(t_all *all)
+{
+	all->light.pos.x = 10;
+	all->light.pos.y = 10;
+	all->light.pos.z = -50;
+	// all->light.direction.x = ;
+	// all->light.direction.y = ;
+	// all->light.direction.z = ;
+	all->light.type = 1;
+	all->light.intens = 0.5;
+
+}
+
+void	set_sphere(t_all *all)
+{
+	all->sphere.c.x = 0;
+	all->sphere.c.y = 0;
+	all->sphere.c.z = 5;
+	all->sphere.r = 2;
+	// all->sphere.color = 0xFFFE100;
+	all->sphere.color = 0xFFF0000;
+	all->sphere.reflect = 0.2;
+}
+
 void	set_img(t_all *all)
 {
 	all->cam.x = 0;
 	all->cam.y = 0;
 	all->cam.z = 0;
+
+	set_light(all);
+	set_sphere(all);
 
 	all->d = 1;
 
@@ -62,10 +89,10 @@ void	go(t_all *all)
 
 	// mlx_put_image_to_window(MLX_PTR, WIN_PTR, IMG_PTR, 0, 0);
 	mlx_hook(WIN_PTR, 2, 5, event, all);
-	// mlx_hook(WIN_PTR, 4, 1L << 2, mouse_press, all);
-	// mlx_hook(WIN_PTR, 5, 1L << 3, mouse_release, all);
-	// mlx_hook(WIN_PTR, 6, 1L << 13, mouse_move, all);
-	// mlx_hook(WIN_PTR, 17, 1L << 17, x_close, all);
+	mlx_hook(WIN_PTR, 4, 1L << 2, mouse_press, all);
+	mlx_hook(WIN_PTR, 5, 1L << 3, mouse_release, all);
+	mlx_hook(WIN_PTR, 6, 1L << 13, mouse_move, all);
+	mlx_hook(WIN_PTR, 17, 1L << 17, x_close, all);
 	mlx_loop(MLX_PTR);
 }
 

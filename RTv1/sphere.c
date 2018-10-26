@@ -42,7 +42,7 @@ t_vector		IntersectRaySphere(t_all *all, t_vector view)
 	return (a);
 }
 
-int		TraceRay(t_all *all, double t_min, double t_max)
+int		TraceRay(t_all *all)
 {
 	t_vector		a;
 	double		closest;
@@ -64,19 +64,14 @@ int		TraceRay(t_all *all, double t_min, double t_max)
 	}
 	if (closest_sphere == 0)
 		return (0xFFFFFFF);
-	return (all->sphere.color);
+	// return (all->sphere.color);
+	return (ReflectedColor(all, closest));
 }
 
 void	sphere(t_all *all)
 {
 	double		x;
 	double		y;
-
-	all->sphere.c.x = 0;
-	all->sphere.c.y = 0;
-	all->sphere.c.z = 5;
-	all->sphere.r = 2;
-	all->sphere.color = 0xFFFE100;
 
 	x = -WIN_X / 2 - 1;
 	while(x++ < WIN_X / 2)
@@ -85,7 +80,7 @@ void	sphere(t_all *all)
 		while (y++ < WIN_Y / 2)
 		{
 			CanvasToViewport(all, x, y);
-			all->color = TraceRay(all, 1, 100000);
+			all->color = TraceRay(all);
 			pixel_put_img(all, x + WIN_X / 2, WIN_Y / 2 - y, all->color);
 			
 		}

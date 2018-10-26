@@ -13,8 +13,8 @@
 #ifndef FT_RTV1_H
 # define FT_RTV1_H
 
-# define WIN_X 500
-# define WIN_Y 500
+# define WIN_X 700
+# define WIN_Y 700
 # define MLX_PTR all->mlx_ptr
 # define WIN_PTR all->win_ptr
 # define IMG_PTR all->img_ptr
@@ -33,12 +33,12 @@
 # include "mlx.h"
 # include "libft/libft.h"
 
-// typedef struct	s_mouse
-// {
-// 	char		press;
-// 	double		x;
-// 	double		y;
-// }				t_mouse;
+typedef struct	s_mouse
+{
+	char		press;
+	double		x;
+	double		y;
+}				t_mouse;
 
 typedef struct	s_vector
 {
@@ -52,20 +52,34 @@ typedef struct	s_vector
 
 }				t_vector;
 
+
+typedef struct s_light
+{
+	t_vector	pos;
+	t_vector	direction;
+	int			type;
+	double		intens;
+
+
+}				t_light;
+
+
 typedef struct s_sphere
 {
 	double		r;
 	t_vector	c;
 	int			color;
+	double		reflect;
 }				t_sphere;
 
 typedef struct	s_all
 {
-	// t_mouse		mouse;
+	t_mouse		mouse;
 	t_vector	vector;
 	t_vector	view;
 	t_vector	cam;
 	t_sphere	sphere;
+	t_light		light;
 
 	double		d;
 	void		*mlx_ptr;
@@ -94,6 +108,14 @@ double		dlinna(t_vector a);
 t_vector	scal(t_vector a, t_vector b);
 t_vector	times(double n, t_vector a);
 t_vector	plus(t_vector a, t_vector b);
+int		ReflectedColor(t_all *all, double closest);
+int		TraceRay(t_all *all);
+t_vector	int_to_rgb(int rgb);
+int		rgb_to_int(t_vector C);
+int		mouse_release(int button, int x, int y, t_all *all);
+int		mouse_move(int x, int y, t_all *all);
+int		x_close(t_all *all);
+int		mouse_press(int button, int x, int y, t_all *all);
 
 
 #endif

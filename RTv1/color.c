@@ -1,34 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   event.c                                            :+:      :+:    :+:   */
+/*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vkarpova <vkarpova@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/22 13:37:17 by vkarpova          #+#    #+#             */
-/*   Updated: 2018/10/22 13:37:18 by vkarpova         ###   ########.fr       */
+/*   Created: 2018/10/26 16:03:40 by vkarpova          #+#    #+#             */
+/*   Updated: 2018/10/26 16:03:42 by vkarpova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "RTv1.h"
 
-int			event(int key, t_all *all)
+int		rgb_to_int(t_vector C)
 {
-	// mlx_destroy_image(MLX_PTR, IMG_PTR);
-	// IMG_PTR = mlx_new_image(MLX_PTR, WIN_X, WIN_Y);
-	if (key == 53)
-	{
-		mlx_clear_window(MLX_PTR, WIN_PTR);
-		free(all);
-		exit(0);
-	}
-	else if (key == 49)
-	{
-		mlx_clear_window(MLX_PTR, WIN_PTR);
-		all->light.pos.x += 2;
-		all->light.pos.y += 2;
-		all->light.pos.z += 2;
-		sphere(all);
-	}
-	return (0);
+	int		rgb;
+
+	rgb = C.x;
+	rgb = (rgb << 8) + C.y;
+	rgb = (rgb << 8) + C.z;
+
+	return (rgb);
+}
+
+t_vector	int_to_rgb(int rgb)
+{
+	t_vector	C;
+
+	C.x = (rgb >> 16) & 0xFF;
+	C.y = (rgb >> 8) & 0xFF;
+	C.z = rgb & 0xFF;
+
+	return (C);
 }
