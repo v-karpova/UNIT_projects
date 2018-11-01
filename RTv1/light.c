@@ -76,24 +76,28 @@ int		ReflectedColor(t_all *all, double closest)
 
 	s_col = int_to_rgb(all->sphere.color);
 	l_col = times(ComputeLighting(all, P, N), s_col);
-	local_color = rgb_to_int(l_col);
+	
 
 	// local_color = all->sphere.color * ComputeLighting(all, P, N);
-	return (local_color);
+	// return (local_color);
 
-	// r = all->sphere.reflect;
-	// if (/*depth <= 0 or */r <= 0)
-	// 	return (local_color);
+	r = all->sphere.reflect;
+	if (/*depth <= 0 or */r <= 0)
+		return (local_color);
 
+	
 	// // Compute the reflected color
 	// O.x = 0;
 	// O.y = 0;
 	// O.z = 0;
 	// R = minus(O, all->view);
 	// R = ReflectRay(R, N);
-	// reflected_color = TraceRay(all);
-
-	// return (local_color * (1 - r) + reflected_color * r);
+	// // reflected_color = TraceRay(all);
+	
+	l_col = times((1 - r), l_col);
+	local_color = rgb_to_int(l_col);
+	return (local_color);
+	// return (local_color * (1 - r)) + reflected_color * r);
 }
 
 

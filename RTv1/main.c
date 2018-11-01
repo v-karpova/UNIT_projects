@@ -27,8 +27,23 @@ void	set_light(t_all *all)
 	// all->light.direction.y = ;
 	// all->light.direction.z = ;
 	all->light.type = 1;
-	all->light.intens = 0.5;
+	all->light.intens = 0.6;
 
+}
+
+void	set_cone(t_all *all)
+{
+	all->cone.c.x = 0;
+	all->cone.c.y = 0;
+	all->cone.c.z = 5;
+
+	all->cone.v.x = 1;
+	all->cone.v.y = 1;
+	all->cone.v.z = 1;
+	// all->cone.k = 1;
+	all->cone.r = 2;
+	all->cone.color = 0xFFF0000;
+	all->cone.reflect = 0.3;
 }
 
 void	set_sphere(t_all *all)
@@ -37,9 +52,37 @@ void	set_sphere(t_all *all)
 	all->sphere.c.y = 0;
 	all->sphere.c.z = 5;
 	all->sphere.r = 2;
-	// all->sphere.color = 0xFFFE100;
 	all->sphere.color = 0xFFF0000;
-	all->sphere.reflect = 0.2;
+	all->sphere.reflect = 0.3;
+}
+
+void	set_cylinder(t_all *all)
+{
+	all->cylinder.c.x = 0;
+	all->cylinder.c.y = 0;
+	all->cylinder.c.z = 5;
+
+	all->cylinder.v.x = 1;
+	all->cylinder.v.y = 1;
+	all->cylinder.v.z = 1;
+
+	all->cylinder.r = 1;
+	all->cylinder.color = 0xFFF0000;
+	all->cylinder.reflect = 0.3;
+}
+
+void	set_plane(t_all *all)
+{
+	all->plane.color = 0xFFF0000;
+	all->plane.reflect = 0.3;
+
+	all->plane.c.x = 1;
+	all->plane.c.y = 1;
+	all->plane.c.z = 2;
+
+	all->plane.v.x = 0;
+	all->plane.v.y = 2;
+	all->plane.v.z = 3;
 }
 
 void	set_img(t_all *all)
@@ -50,6 +93,9 @@ void	set_img(t_all *all)
 
 	set_light(all);
 	set_sphere(all);
+	set_cone(all);
+	set_plane(all);
+	set_cylinder(all);
 
 	all->d = 1;
 
@@ -57,14 +103,17 @@ void	set_img(t_all *all)
 	all->bpp = 32;
 	all->endian = 0;
 	all->color = 0xFFF0000;
-	all->zoom = 0.5;
+	all->zoom = 0.1;
 	all->img =
 	mlx_get_data_addr(IMG_PTR, &all->bpp, &all->size_line, &all->endian);
 }
 
 void	do_it(t_all *all)
 {
-	sphere(all);
+	// sphere(all);
+	// cone(all);
+	plane(all);
+	// cylinder(all);
 }
 
 void	pixel_put_img(t_all *all, int x, int y, int color)
@@ -89,10 +138,10 @@ void	go(t_all *all)
 
 	// mlx_put_image_to_window(MLX_PTR, WIN_PTR, IMG_PTR, 0, 0);
 	mlx_hook(WIN_PTR, 2, 5, event, all);
-	mlx_hook(WIN_PTR, 4, 1L << 2, mouse_press, all);
-	mlx_hook(WIN_PTR, 5, 1L << 3, mouse_release, all);
-	mlx_hook(WIN_PTR, 6, 1L << 13, mouse_move, all);
-	mlx_hook(WIN_PTR, 17, 1L << 17, x_close, all);
+	// mlx_hook(WIN_PTR, 4, 1L << 2, mouse_press, all);
+	// mlx_hook(WIN_PTR, 5, 1L << 3, mouse_release, all);
+	// mlx_hook(WIN_PTR, 6, 1L << 13, mouse_move, all);
+	// mlx_hook(WIN_PTR, 17, 1L << 17, x_close, all);
 	mlx_loop(MLX_PTR);
 }
 
