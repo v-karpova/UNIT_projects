@@ -23,11 +23,8 @@ void	set_light(t_all *all)
 	all->light.pos.x = 10;
 	all->light.pos.y = 10;
 	all->light.pos.z = -50;
-	// all->light.direction.x = ;
-	// all->light.direction.y = ;
-	// all->light.direction.z = ;
 	all->light.type = 1;
-	all->light.intens = 0.6;
+	all->light.intense = 0.6;
 
 }
 
@@ -35,13 +32,14 @@ void	set_cone(t_all *all)
 {
 	all->cone.c.x = 0;
 	all->cone.c.y = 0;
-	all->cone.c.z = 5;
+	all->cone.c.z = 3;
 
 	all->cone.v.x = 1;
-	all->cone.v.y = 1;
-	all->cone.v.z = 1;
-	// all->cone.k = 1;
-	all->cone.r = 2;
+	all->cone.v.y = 0;
+	all->cone.v.z = 0;
+
+	all->cone.a = 0.2;
+
 	all->cone.color = 0xFFF0000;
 	all->cone.reflect = 0.3;
 }
@@ -51,7 +49,7 @@ void	set_sphere(t_all *all)
 	all->sphere.c.x = 0;
 	all->sphere.c.y = 0;
 	all->sphere.c.z = 5;
-	all->sphere.r = 2;
+	all->sphere.r = 1;
 	all->sphere.color = 0xFFF0000;
 	all->sphere.reflect = 0.3;
 }
@@ -63,8 +61,8 @@ void	set_cylinder(t_all *all)
 	all->cylinder.c.z = 5;
 
 	all->cylinder.v.x = 1;
-	all->cylinder.v.y = 1;
-	all->cylinder.v.z = 1;
+	all->cylinder.v.y = 0;
+	all->cylinder.v.z = 0;
 
 	all->cylinder.r = 1;
 	all->cylinder.color = 0xFFF0000;
@@ -80,9 +78,9 @@ void	set_plane(t_all *all)
 	all->plane.c.y = 1;
 	all->plane.c.z = 2;
 
-	all->plane.v.x = 0;
-	all->plane.v.y = 2;
-	all->plane.v.z = 3;
+	all->plane.v.x = 1;
+	all->plane.v.y = 0;
+	all->plane.v.z = 0;
 }
 
 void	set_img(t_all *all)
@@ -136,12 +134,11 @@ void	go(t_all *all)
 	set_img(all);
 	do_it(all);
 
-	// mlx_put_image_to_window(MLX_PTR, WIN_PTR, IMG_PTR, 0, 0);
 	mlx_hook(WIN_PTR, 2, 5, event, all);
 	// mlx_hook(WIN_PTR, 4, 1L << 2, mouse_press, all);
 	// mlx_hook(WIN_PTR, 5, 1L << 3, mouse_release, all);
 	// mlx_hook(WIN_PTR, 6, 1L << 13, mouse_move, all);
-	// mlx_hook(WIN_PTR, 17, 1L << 17, x_close, all);
+	mlx_hook(WIN_PTR, 17, 1L << 17, x_close, all);
 	mlx_loop(MLX_PTR);
 }
 
@@ -155,12 +152,12 @@ int		main(int argc, char **argv)
 
 	o = 1;
 	all = (t_all *)malloc(sizeof(t_all));
-	// // m = (t_mouse *)malloc(sizeof(t_mouse));
-	// vector = (t_vector *)malloc(sizeof(t_vector));
-	// sphere = (t_sphere *)malloc(sizeof(t_sphere));
+	// m = (t_mouse *)malloc(sizeof(t_mouse));
 
 	if (argc == 1)
 		go(all);
+	else if (argc == 2)
+		open_file(argv, all);
 	else
 		usage(o);
 	return (0);

@@ -20,7 +20,7 @@ double	ComputeLighting(t_all *all, t_vector P, t_vector N)
 
 	i = 0;
 	if (all->light.type == 0)   //общий свет
-		i += all->light.intens;
+		i += all->light.intense;
 	else
 	{
 		if (all->light.type == 1) 	// точечный свет
@@ -29,12 +29,12 @@ double	ComputeLighting(t_all *all, t_vector P, t_vector N)
 			L = all->light.direction;
 			NL = umnozh(N, L);
 		if (NL > 0)
-			i += all->light.intens * NL / (dlinna(N) * dlinna(L));
+			i += all->light.intense * NL / (dlinna(N) * dlinna(L));
 	}
 	L = minus(all->light.pos, P);
 	NL = umnozh(N, L);
 	if (NL > 0)
-		i += all->light.intens * NL / (dlinna(N) * dlinna(L));
+		i += all->light.intense * NL / (dlinna(N) * dlinna(L));
 	return (i);
 }
 

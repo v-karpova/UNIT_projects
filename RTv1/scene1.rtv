@@ -1,0 +1,31 @@
+camera:0,0,-20
+
+#light
+ intense:8
+ position:0,0,-200
+
+#plane
+ color:0,0,255
+ specular:0
+ normal:0,0,1
+ center:0,0,30
+
+#cylinder
+ color:0,255,0
+ specular:0
+ radius:4
+ normal:1,1,0
+ center:0,0,5
+
+#cone
+ color:255,255,0
+ specular:0
+ angle:80
+ normal:-1,1,0
+ center:1,0,5
+
+#sphere
+ color:255,0,0
+ specular:25
+ radius:6
+ center:1,0,5

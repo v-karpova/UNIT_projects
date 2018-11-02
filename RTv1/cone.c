@@ -16,16 +16,13 @@ t_vector		IntersectRayCone(t_all *all, t_vector view)
 {
 	t_vector	OC;
 	t_vector	a;
-	t_vector	k; //0.87
+	t_vector	k;
 	double		disc;
-
+	
 	OC = minus(all->cam, all->cone.c);
-	k.x = umnozh(view, all->cone.v) * umnozh(view, all->cone.v) - (0.87)*(0.87);
-	k.y = 2 * (umnozh(all->cone.v, view) * umnozh(OC, all->cone.v)-  umnozh(OC, view) * umnozh(OC, all->cone.v) * (0.87)*(0.87));
-	k.z = umnozh(OC, all->cone.v) * umnozh(OC, all->cone.v) - umnozh(OC, OC) * umnozh(OC, all->cone.v) * (0.87)*(0.87);
-	// k.x = umnozh(view, view) - umnozh(view, all->cone.v) * umnozh(view, all->cone.v);
-	// k.y = 2 * (umnozh(OC, view) - umnozh(all->cone.v, view) * umnozh(OC, all->cone.v) + 2 * all->cone.k);
-	// k.z = umnozh(OC, OC) - umnozh(OC, all->cone.v) * (umnozh(OC, all->cone.v) + 4 * all->cone.k);
+	k.x = umnozh(view, view) - (1 + (all->cone.a)*(all->cone.a)) * umnozh(view, all->cone.v) * umnozh(view, all->cone.v);
+	k.y = 2 * (umnozh(view, OC) * (1 + (all->cone.a)*(all->cone.a) * umnozh(view, all->cone.v) * umnozh(OC, all->cone.v)));
+	k.z = umnozh(view, view) - (1 + (all->cone.a)*(all->cone.a)) * umnozh(OC, all->cone.v) * umnozh(OC, all->cone.v);
 	disc = k.y * k.y - 4 * k.x * k.z;
 	if (disc < 0)
 	{

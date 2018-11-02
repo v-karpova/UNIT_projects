@@ -59,7 +59,7 @@ typedef struct s_light
 	t_vector	pos;
 	t_vector	direction;
 	int			type;
-	double		intens;
+	double		intense;
 }				t_light;
 
 
@@ -91,8 +91,7 @@ typedef struct s_sphere
 
 typedef struct s_cone
 {
-	double		r;
-	double		k;
+	double		a;
 	t_vector	c;
 	t_vector	v;
 	int			color;
@@ -111,7 +110,6 @@ typedef struct	s_all
 	t_plane		plane;
 	t_cylinder	cylinder;
 	t_light		light;
-
 
 	double		d;
 	void		*mlx_ptr;
@@ -143,16 +141,26 @@ double		dlinna(t_vector a);
 t_vector	scal(t_vector a, t_vector b);
 t_vector	times(double n, t_vector a);
 t_vector	plus(t_vector a, t_vector b);
-int		ReflectedColor(t_all *all, double closest);
-int		TraceRay(t_all *all);
+int			ReflectedColor(t_all *all, double closest);
+int			TraceRay(t_all *all);
 t_vector	int_to_rgb(int rgb);
-int		rgb_to_int(t_vector C);
-int		mouse_release(int button, int x, int y, t_all *all);
-int		mouse_move(int x, int y, t_all *all);
-int		x_close(t_all *all);
-int		mouse_press(int button, int x, int y, t_all *all);
-void	cone(t_all *all);
-
+int			rgb_to_int(t_vector C);
+int			mouse_release(int button, int x, int y, t_all *all);
+int			mouse_move(int x, int y, t_all *all);
+int			x_close(t_all *all);
+int			mouse_press(int button, int x, int y, t_all *all);
+void		cone(t_all *all);
+void		read_file(t_all *all, int fd);
+void		open_file(char **argv, t_all *all);
+void		error(int n);
+void	save_cone(char *line, t_all *all);
+void	save_cylinder(char *line, t_all *all);
+void	save_plane(char *line, t_all *all);
+void	save_sphere(char *line, t_all *all);
+void	save_light(char *line, t_all *all);
+t_vector	save_color(char *line, t_all *all);
+t_vector	save_normal(char *line, t_all *all);
+t_vector	save_center(char *line, t_all *all);
+t_vector	save_cam(char *line, t_all *all);
 
 #endif
-
