@@ -10,32 +10,27 @@
 #                                                                              #
 #******************************************************************************#
 
-NAME = fractol
+NAME = fdf
 
-SRC = calc.c\
-		event.c\
-		forever.c\
-		heart.c\
-		julia.c\
+SRC = buttons.c\
+		draw.c\
+		ft_atoi_base.c\
 		main.c\
-		mandelbar.c\
-		mandelbrot.c\
+		moves.c\
 		mouse.c\
-		rabbit.c\
-		snowflake.c\
-		tricorn.c\
+		work.c
 
 OBJ = $(SRC:.c=.o)
 
-HEAD = fractol.h
+HEAD = fdf.h
 
 all:	$(NAME)
 
 $(NAME):
 	make -C libft re
-	gcc -Wall -Wextra -Werror -lmlx -framework OpenGL -framework AppKit -pthread $(SRC) libft/libft.a -o $(NAME) -lm
+	gcc -Wall -Wextra -Werror -lmlx -framework OpenGL -framework AppKit $(SRC) libft/libft.a -o $(NAME) -lm
 
-%.o:%.c $(HEAD)
+%.o:%.c #HEADER#
 	gcc -o $@ -c $< -I ./libft/
 
 clean:
