@@ -42,7 +42,7 @@ t_vector		times(double n, t_vector a)
 	return(new);
 }
 
-double		umnozh(t_vector a, t_vector b)
+double		dot(t_vector a, t_vector b)
 {
 	t_vector	res;
 
@@ -67,6 +67,6 @@ double		dlinna(t_vector a)
 {
 	t_vector	res;
 
-	res.res = sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
+	res.res = sqrt(dot(a, a));
 	return(res.res);
 }

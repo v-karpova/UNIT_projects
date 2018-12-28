@@ -13,17 +13,22 @@
 #ifndef FT_RTV1_H
 # define FT_RTV1_H
 
-# define WIN_X 700
-# define WIN_Y 700
+# define WIN_X 1000
+# define WIN_Y 1000
 # define MLX_PTR all->mlx_ptr
 # define WIN_PTR all->win_ptr
 # define IMG_PTR all->img_ptr
-# define X vector->x
-# define Y vector->y
-# define Z vector->z
+
+# define PLANE 300
+# define SPHERE 301
+# define CYL 302
+# define CONE 303
+# define LIGHT 304
+# define CAM 305
 
 # define ZOOM all->zoom
 # define COLOR all->color
+# define FON 0xFFAEBD7
 
 # include <unistd.h>
 # include <stdlib.h>
@@ -40,6 +45,13 @@ typedef struct	s_mouse
 	double		y;
 }				t_mouse;
 
+typedef struct	s_clos
+{
+	t_list		*obj;
+	double		clost;
+	double		y;
+}				t_clos;
+
 typedef struct	s_vector
 {
 	double		x;
@@ -50,7 +62,6 @@ typedef struct	s_vector
 	double		t1;
 	double		t2;
 	double		t;
-
 }				t_vector;
 
 
@@ -58,7 +69,6 @@ typedef struct s_light
 {
 	t_vector	pos;
 	t_vector	direction;
-	int			type;
 	double		intense;
 }				t_light;
 
@@ -98,19 +108,29 @@ typedef struct s_cone
 	double		reflect;
 }				t_cone;
 
+typedef struct s_obj
+{
+	t_sphere	*sphere;
+	t_cone		*cone;
+	t_plane		*plane;
+	t_cylinder	*cylinder;
+}				t_obj;
+
 typedef struct	s_all
 {
 	t_mouse		mouse;
 	t_vector	vector;
 	t_vector	view;
 	t_vector	N;
-	t_vector	cam;
-	t_sphere	sphere;
-	t_cone		cone;
-	t_plane		plane;
-	t_cylinder	cylinder;
-	t_light		light;
+	t_vector	P;
+	t_clos		clos;
 
+	t_vector	cam;
+	t_list		*obj;
+	t_list		*light;
+	
+	int			fd;
+	double		closest;
 	double		d;
 	void		*mlx_ptr;
 	void		*win_ptr;
@@ -125,23 +145,18 @@ typedef struct	s_all
 	char		*img;
 }				t_all;
 
-int			is_in_sphere(t_vector *vector);
-void		sphere(t_all *all);
-void		cone(t_all *all);
-void		plane(t_all *all);
-void		cylinder(t_all *all);
 void		do_it(t_all *all);
 int			event(int key, t_all *all);
 t_vector	send_ray(int x, int y);
 void		color_pixel(double x, double y);
 void		pixel_put_img(t_all *all, int x, int y, int color);
 t_vector	minus(t_vector a, t_vector b);
-double		umnozh(t_vector a, t_vector b);
+double		dot(t_vector a, t_vector b);
 double		dlinna(t_vector a);
 t_vector	scal(t_vector a, t_vector b);
 t_vector	times(double n, t_vector a);
 t_vector	plus(t_vector a, t_vector b);
-int			ReflectedColor(t_all *all, double closest);
+int			ReflectedColor(t_list *list, t_all *all, double closest);
 int			TraceRay(t_all *all);
 t_vector	int_to_rgb(int rgb);
 int			rgb_to_int(t_vector C);
@@ -150,17 +165,36 @@ int			mouse_move(int x, int y, t_all *all);
 int			x_close(t_all *all);
 int			mouse_press(int button, int x, int y, t_all *all);
 void		cone(t_all *all);
-void		read_file(t_all *all, int fd);
-void		open_file(char **argv, t_all *all);
+void		read_file(t_obj *obj, t_all *all);
+void		open_file(char **argv, t_obj *obj, t_all *all);
 void		error(int n);
-void	save_cone(char *line, t_all *all);
-void	save_cylinder(char *line, t_all *all);
-void	save_plane(char *line, t_all *all);
-void	save_sphere(char *line, t_all *all);
-void	save_light(char *line, t_all *all);
-t_vector	save_color(char *line, t_all *all);
-t_vector	save_normal(char *line, t_all *all);
-t_vector	save_center(char *line, t_all *all);
-t_vector	save_cam(char *line, t_all *all);
+int			save_cone(t_all *all, t_obj *obj);
+int			save_plane(t_all *all, t_obj *obj);
+int			save_cylinder(t_all *all, t_obj *obj);
+int			save_sphere(t_all *all, t_obj *obj);
+int			save_light(t_all *all);
+int			save_color(t_all *all, int *color);
+int			save_radius(t_all *all, double *radius);
+int			save_pos(t_all *all, t_vector *pos);
+int			save_intense(t_all *all, double *intense);
+int			save_angle(t_all *all, double *angle);
+int			save_reflect(t_all *all, double *reflect);
+int			save_normal(t_all *all, t_vector *norm);
+int			save_center(t_all *all, t_vector *center);
+t_vector	save_cam(char *line);
+t_vector	IntersectRay(t_all *all, t_list *list);
+t_vector	IntersectRaySphere(t_all *all, t_sphere *sphere);
+t_vector	IntersectRayCylinder(t_all *all, t_cylinder *cylinder);
+t_vector	IntersectRayCone(t_all *all, t_cone *cone);
+t_vector	IntersectRayPlane(t_all *all, t_plane *plane);
+void		CanvasToViewport(t_all *all, double x, double y);
+void		print(t_obj *obj, t_all *all);
+int			light_sphere(t_light *light, t_all *all, t_sphere *sphere);
+int			light_plane(t_light *light, t_all *all, t_plane *plane);
+int			light_cone(t_light *light, t_all *all, t_cone *cone);
+int			light_cyl(t_light *light, t_all *all, t_cylinder *cyl);
+t_clos		closer_obj(t_all *all);
+double		calc_reflect(double reflect, t_vector N, t_all *all, t_light *light);
+double		ComputeLighting(t_all *all, t_vector N);
 
 #endif

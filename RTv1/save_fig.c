@@ -12,76 +12,100 @@
 
 #include "RTv1.h"
 
-void	save_plane(char *line, t_all *all)
+int		save_light(t_all *all)
 {
-	char		**tmp;
+	t_list		*tmp;
+	t_light		light;
+	char		*line;
 
-	if (ft_strncmp(line, " color:", 7) == 0)
-		all->plane.color = rgb_to_int(save_color(line, all));
-	if (ft_strncmp(line, " normal:", 8) == 0)
-		all->plane.v = save_normal(line, all);
-	if (ft_strncmp(line, " center:", 8) == 0)
-		all->plane.c = save_center(line, all);
-	if (ft_strncmp(line, " specular:", 10) == 0)
-		all->plane.reflect = (double)ft_atoi(&line[10]);
+	if (save_intense(all, &(light.intense)) &&
+		(save_pos(all, &(light.pos))))
+	{
+		tmp = ft_lstnew(&(light), sizeof(t_light));
+		tmp->content_size = LIGHT;
+		ft_lstadd(&(all->light), tmp);
+		return (1);
+	}
+	ft_putendl("You miss some info for light");
+	return (0);
 }
 
-void	save_cylinder(char *line, t_all *all)
+int		save_plane(t_all *all, t_obj *obj)
 {
-	char		**tmp;
-
-	if (ft_strncmp(line, " color:", 7) == 0)
-		all->cylinder.color = rgb_to_int(save_color(line, all));
-	if (ft_strncmp(line, " radius:", 8) == 0)
-		all->cylinder.r = (double)ft_atoi(&line[8]);
-	if (ft_strncmp(line, " normal:", 8) == 0)
-		all->cylinder.v = save_normal(line, all);
-	if (ft_strncmp(line, " center:", 8) == 0)
-		all->cylinder.c = save_center(line, all);
-	if (ft_strncmp(line, " specular:", 10) == 0)
-		all->cylinder.reflect = (double)ft_atoi(&line[10]);
+	t_list		*tmp;
+	t_plane		plane;
+	
+	if (save_color(all, &(plane.color)) &&
+		(save_reflect(all, &(plane.reflect))) &&
+		(save_normal(all, &(plane.v))) &&
+		(save_center(all, &(plane.c))))
+	{
+		tmp = ft_lstnew(&(plane), sizeof(t_plane));
+		tmp->content_size = PLANE;
+		ft_lstadd(&(all->obj), tmp);
+		return (1);
+	}
+	ft_putendl("You miss some info for plane");
+	return (0);
 }
 
-void	save_sphere(char *line, t_all *all)
+int		save_cylinder(t_all *all, t_obj *obj)
 {
-	char		**tmp;
-
-	if (ft_strncmp(line, " color:", 7) == 0)
-		all->sphere.color = rgb_to_int(save_color(line, all));
-	if (ft_strncmp(line, " radius:", 8) == 0)
-		all->sphere.r = (double)ft_atoi(&line[8]);
-	if (ft_strncmp(line, " center:", 8) == 0)
-		all->sphere.c = save_center(line, all);
-	if (ft_strncmp(line, " specular:", 10) == 0)
-		all->sphere.reflect = (double)ft_atoi(&line[10]);
+	t_list		*tmp;
+	t_cylinder	cylinder;
+	
+	if (save_color(all, &(cylinder.color)) &&
+		(save_reflect(all, &(cylinder.reflect))) &&
+		(save_radius(all, &(cylinder.r))) &&
+		(save_normal(all, &(cylinder.v))) &&
+		(save_center(all, &(cylinder.c))))
+		{
+		tmp = ft_lstnew(&(cylinder), sizeof(t_cylinder));
+		tmp->content_size = CYL;
+		ft_lstadd(&(all->obj), tmp);
+		return (1);
+	}
+	ft_putendl("You miss some info for cylinder");
+	return (0);
 }
 
-void	save_cone(char *line, t_all *all)
+int		save_sphere(t_all *all, t_obj *obj)
 {
-	char		**tmp;
+	t_list		*tmp;
+	t_sphere	sphere;
 
-	if (ft_strncmp(line, " color:", 7) == 0)
-		all->cone.color = rgb_to_int(save_color(line, all));
-	if (ft_strncmp(line, " angle:", 7) == 0)
-		all->cone.a = (double)ft_atoi(&line[7]);
-	if (ft_strncmp(line, " normal:", 8) == 0)
-		all->cone.v = save_normal(line, all);
-	if (ft_strncmp(line, " center:", 8) == 0)
-		all->cone.c = save_center(line, all);
-	if (ft_strncmp(line, " specular:", 10) == 0)
-		all->cone.reflect = (double)ft_atoi(&line[10]);
+	if (save_color(all, &(sphere.color)) &&
+		(save_reflect(all, &(sphere.reflect))) &&
+		(save_radius(all, &(sphere.r))) &&
+		(save_center(all, &(sphere.c))))
+	{
+		// printf("COLOR = %d\n", sphere.color);
+		tmp = ft_lstnew(&sphere, sizeof(t_sphere));
+		tmp->content_size = SPHERE;
+		ft_lstadd(&(all->obj), tmp);
+		return (1);
+	}
+	ft_putendl("You miss some info for sphere");
+	return (0);
 }
 
-// void	save_obj(char *line, t_all *all, int obj)
-// {
-// 	if (obj == 0)
-// 		save_light(line, all);
-// 	else if (obj == 1)
-// 		save_plane(line, all);
-// 	else if (obj == 2)
-// 		save_cylinder(line, all);
-// 	else if (obj == 3)
-// 		save_cone(line, all);
-// 	else if (obj == 4)
-// 		save_sphere(line, all);
-// }
+int		save_cone(t_all *all, t_obj *obj)
+{
+	t_list		*tmp;
+	t_cone		cone;
+	
+	if (save_color(all, &(cone.color)) &&
+		(save_reflect(all, &(cone.reflect))) &&
+		(save_angle(all, &(cone.a))) &&
+		(save_normal(all, &(cone.v))) &&
+		(save_center(all, &(cone.c))))
+	{
+		tmp = ft_lstnew(&cone, sizeof(t_cone));
+		tmp->content_size = CONE;
+		ft_lstadd(&(all->obj), tmp);
+		return (1);
+	}
+	ft_putendl("You miss some info for cone");
+	return (0);
+}
+
