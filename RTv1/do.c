@@ -41,17 +41,14 @@ void	CanvasToViewport(t_all *all, double x, double y)
 int		TraceRay(t_all *all)
 {
 	t_clos		closer;
-	t_list		list;
 
-	list = *(all->obj);
 	all->closest = 600000;
 	closer.obj = 0;
 	closer = closer_obj(all);
 	if (closer.obj == NULL)
 		return (FON);
-		// return (0);
-	return (ReflectedColor(all->obj, all, closer.clost));
-	// return (ReflectedColor(all, all->closest));
+	all->P = plus(all->cam, times(closer.clost, all->view));
+	return (ReflectedColor(all, closer));
 }
 
 t_clos		closer_obj(t_all *all)
@@ -67,13 +64,13 @@ t_clos		closer_obj(t_all *all)
 	while (list)
 	{
 		a = IntersectRay(all, list);
-		if (a.t1 >= 1 && a.t1 <= 600000 && a.t1 < closer.clost)
+		if (a.t1 >= 0.01 && a.t1 <= 600000 && a.t1 < closer.clost)
 		{
 			closer.obj = list;
 			closer.clost =  a.t1;
 			all->closest = a.t1;
 		}
-		if (a.t2 >= 1 && a.t2 <= 600000 && a.t2 < closer.clost)
+		if (a.t2 >= 0.01 && a.t2 <= 600000 && a.t2 < closer.clost)
 		{
 			closer.obj = list;
 			closer.clost =  a.t2;

@@ -63,7 +63,6 @@ t_vector		IntersectRayCylinder(t_all *all, t_cylinder *cylinder)
 	k.x = dot(all->view, all->view) - dot(all->view, cylinder->v) * dot(all->view, cylinder->v);
 	k.y = 2 * (dot(OC, all->view) - dot(cylinder->v, all->view) * dot(OC, cylinder->v));
 	k.z = dot(OC, OC) - dot(OC, cylinder->v) * dot(OC, cylinder->v) - cylinder->r * cylinder->r;
-
 	disc = k.y * k.y - 4 * k.x * k.z;
 	if (disc < 0)
 	{
@@ -108,11 +107,10 @@ t_vector		IntersectRayPlane(t_all *all, t_plane *plane)
 	double		i;
 	double		j;
 
-	// if (DOT(mass->d, plan->v) < 0)
-	// 	mass->n = plan->v;
-	// else
-	// 	mass->n = -plan->v;
 	plane->v = times((1 / dlinna(plane->v)), plane->v);
+	if (dot(all->view, plane->v) < 0)
+		plane->v = minus((t_vector){0, 0 , 0}, plane->v);
+
 	OC = minus(plane->c, all->cam);
 	i = dot(OC, plane->v);
 	j = dot(all->view, plane->v);
@@ -126,3 +124,4 @@ t_vector		IntersectRayPlane(t_all *all, t_plane *plane)
 	a.t2 = i / j;
 	return (a);
 }
+

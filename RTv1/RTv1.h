@@ -28,7 +28,7 @@
 
 # define ZOOM all->zoom
 # define COLOR all->color
-# define FON 0xFFAEBD7
+# define FON 0xF696969
 
 # include <unistd.h>
 # include <stdlib.h>
@@ -123,6 +123,7 @@ typedef struct	s_all
 	t_vector	view;
 	t_vector	N;
 	t_vector	P;
+	t_vector	L;
 	t_clos		clos;
 
 	t_vector	cam;
@@ -156,7 +157,6 @@ double		dlinna(t_vector a);
 t_vector	scal(t_vector a, t_vector b);
 t_vector	times(double n, t_vector a);
 t_vector	plus(t_vector a, t_vector b);
-int			ReflectedColor(t_list *list, t_all *all, double closest);
 int			TraceRay(t_all *all);
 t_vector	int_to_rgb(int rgb);
 int			rgb_to_int(t_vector C);
@@ -195,6 +195,14 @@ int			light_cone(t_light *light, t_all *all, t_cone *cone);
 int			light_cyl(t_light *light, t_all *all, t_cylinder *cyl);
 t_clos		closer_obj(t_all *all);
 double		calc_reflect(double reflect, t_vector N, t_all *all, t_light *light);
-double		ComputeLighting(t_all *all, t_vector N);
+double		ComputeLighting(t_all *all, t_vector N, double s);
+t_vector	ReflectRay(t_vector M, t_vector N);
+double		fig_specular(t_list *list);
+t_vector	fig_center(t_list *list);
+int			fig_color(t_list *list);
+int			color(double i, double j, t_clos clos);
+double		spec(t_list *list, t_all *all, t_light *light);
+double		diff(t_list *list, t_all *all, t_light *light);
+int		ReflectedColor(t_all *all, t_clos clos);
 
 #endif

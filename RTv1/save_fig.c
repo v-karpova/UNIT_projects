@@ -79,7 +79,6 @@ int		save_sphere(t_all *all, t_obj *obj)
 		(save_radius(all, &(sphere.r))) &&
 		(save_center(all, &(sphere.c))))
 	{
-		// printf("COLOR = %d\n", sphere.color);
 		tmp = ft_lstnew(&sphere, sizeof(t_sphere));
 		tmp->content_size = SPHERE;
 		ft_lstadd(&(all->obj), tmp);

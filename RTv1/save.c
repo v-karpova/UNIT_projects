@@ -19,7 +19,11 @@ int		save_reflect(t_all *all, double *reflect)
 	if ((get_next_line(all->fd, &line) > 0) &&
 		(ft_strncmp(line, " specular:", 10) == 0))
 	{
-		*reflect = (double)ft_atoi(&line[10]) * 10;
+		*reflect = (double)ft_atoi(&line[10]);
+		if (*reflect >= 0 && *reflect <= 10)
+			return (1);
+		else
+			*reflect = 10;
 		return (1);
 	}
 	return (0);
@@ -65,12 +69,12 @@ int		save_pos(t_all *all, t_vector *pos)
 		pos->x = (double)ft_atoi(tmp[0]);
 		pos->y = (double)ft_atoi(tmp[1]);
 		pos->z = (double)ft_atoi(tmp[2]);
-		// printf("POS (%f,%f,%f)\n", pos->x, pos->y, pos->z);
 		free(tmp);
 		return (1);
 	}
 	return (0);
 }
+
 int		save_intense(t_all *all, double *intense)
 {
 	char		*line;
@@ -88,7 +92,6 @@ int		save_intense(t_all *all, double *intense)
 	}
 	return (0);
 }
-
 
 int		save_color(t_all *all, int *color)
 {
