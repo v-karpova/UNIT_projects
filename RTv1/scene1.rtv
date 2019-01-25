@@ -1,29 +1,43 @@
-camera:0,0,0
+camera:0,0,-30
 
 #light
  intense:10
- position:0,0,0
+ position:-20,0,-2
 
 #sphere
- color:255, 0, 64
- specular:10
- radius:3
- center:5,1,15
+ color:255, 0, 0
+ specular:100
+ radius:2
+ center:-4,0,8
+
+#sphere
+ color:255, 0, 0
+ specular:50
+ radius:2
+ center:0,0,8
+
+#sphere
+ color:255, 0, 0
+ specular:0
+ radius:2
+ center:4,0,8
+
+#cylinder
+ color:0,225,225
+ specular:250
+ radius:1
+ normal:0,1,0
+ center:-4,0,8
+
+#cylinder
+ color:0,225,225
+ specular:250
+ radius:1
+ normal:0,1,0
+ center:4,0,8
 
 #plane
- color:218, 165, 32
- specular:7
- normal:2,1,2
- center:0,1,26
-
-#plane
- color:0, 255, 143
- specular:7
- normal:-2,1,2
- center:0,1,26
-
-#plane
- color:0, 3, 255
- specular:7
- normal:0,2,0
- center:0,-1,26
+ color:113, 143, 255
+ specular:50
+ normal:2,0,2
+ center:1,1,15

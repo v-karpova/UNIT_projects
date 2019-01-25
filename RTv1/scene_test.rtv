@@ -1,0 +1,11 @@
+camera:0,0,-20
+
+#sphere
+ color:240, 128, 128
+ specular:500
+ radius:2
+ center:0,0,8
+
+#light
+ intense:10
+ position:0,0,0

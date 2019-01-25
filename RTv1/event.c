@@ -30,10 +30,10 @@ int			event(int key, t_all *all)
 			mlx_string_put(MLX_PTR, WIN_PTR, 10, 10, 0, "NO SPOT LIGHT !");
 		else
 			light = (t_light *)(all->light->content);
-			// mlx_clear_window(MLX_PTR, WIN_PTR);
+			mlx_clear_window(MLX_PTR, WIN_PTR);
 			light->pos.x += 2;
 			light->pos.y += 2;
-			light->pos.z -= 2;
+			// light->pos.z -= 2;
 			do_it(all);
 
 	}

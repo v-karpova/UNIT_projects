@@ -42,13 +42,13 @@ void	read_file(t_obj *obj, t_all *all)
 		else if (ft_strncmp(line, "#light", 6) == 0)
 			save_light(all);
 		else if (ft_strncmp(line, "#plane", 6) == 0)
-			save_plane(all, obj);
+			save_plane(all);
 		else if (ft_strncmp(line, "#cylinder", 9) == 0)
-			save_cylinder(all, obj);
+			save_cylinder(all);
 		else if (ft_strncmp(line, "#cone", 5) == 0)
-			save_cone(all, obj);
+			save_cone(all);
 		else if (ft_strncmp(line, "#sphere", 7) == 0)
-			save_sphere(all, obj);
+			save_sphere(all);
 		free(line);
 	}
 }
@@ -61,7 +61,7 @@ void	print(t_obj *obj, t_all *all)
 	list = all->obj;
 	i = 1;
 	// printf("\nFILE !\n");
-	while (list)
+	while (list != NULL)
 	{
 		printf("%d - ", i);
 		if (list->content_size == CAM)
@@ -76,7 +76,11 @@ void	print(t_obj *obj, t_all *all)
 			printf("sphere\n");
 		else if (list->content_size == PLANE)
 			printf("plane\n");
+		else 
+			printf("PROBLEM !\n");
 		i++;
 		list = list->next;
 	}
+	if (list == NULL)
+			printf("NULL\n");
 }

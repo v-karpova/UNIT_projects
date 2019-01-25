@@ -68,5 +68,21 @@ double		dlinna(t_vector a)
 	t_vector	res;
 
 	res.res = sqrt(dot(a, a));
+	// if (res.res == 0)
+	// 	return (1);
 	return(res.res);
+}
+
+t_vector		norm(t_vector a)
+{
+	t_vector	norm;
+	double		dlinna;
+
+	dlinna = sqrt(dot(a, a));
+	if (dlinna == 0)
+		dlinna = 1;
+	norm.x = a.x / dlinna;
+	norm.y = a.y / dlinna;
+	norm.z = a.z / dlinna;
+	return(norm);
 }

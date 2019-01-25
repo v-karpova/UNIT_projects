@@ -12,61 +12,54 @@
 
 #include "RTv1.h"
 
-int		ReflectedColor(t_all *all, t_clos clos)
+int		ReflectedColor(t_all *all, t_clos clos, t_vec *vec)
 {
 	t_list		*light;
 	t_vector	k;
-	t_clos 		shadow;
 
 	light = all->light;
-	all->N = minus(all->P, fig_center(clos.obj));
-	all->N = times((1 / dlinna(all->N)), all->N);
 	while (light)
 	{
-		all->L = minus(((t_light *)(light->content))->pos, all->P);
-		shadow = closer_obj(all);
-		if ((shadow.obj) != NULL)
-		{
-			k.x += diff(clos.obj, all, (t_light *)(light->content));
+		vec->L = minus(((t_light *)(light->content))->pos, vec->P);
+		// if ((closer_obj(all->obj, vec->P, vec->L, 0.01).obj) != NULL)
+		// {
+			k.x += diff(((t_light *)(light->content))->intense, vec);
 			if ((fig_specular(clos.obj)) > 0)
-				k.y += spec(clos.obj, all, (t_light *)(light->content));
-		}
+				k.y += spec(fig_specular(clos.obj), ((t_light *)(light->content))->intense, vec);
+		// }
 		light = light->next;
 	}
 	return (color(k.x, k.y, clos));
 }
 
-double		diff(t_list *list, t_all *all, t_light *light)
+double		diff(double intense, t_vec *vec)
 {
 	double		i;
 	double		NL;
 
 	i = 0;
-	NL = dot(all->N, all->L);
+	NL = dot(vec->N, vec->L);
 	if (NL > 0)
-		i = light->intense * NL / (dlinna(all->N) * dlinna(all->L));
-	// printf("i = %f\n", i);
+		i = intense * NL / (dlinna(vec->N) * dlinna(vec->L));
 	return (i);
 }
 
-double		spec(t_list *list, t_all *all, t_light *light)
+double		spec(double spec, double intense, t_vec *vec)
 {
 	t_vector	R;
-	t_vector	V;
-	int			RV;
+	double		RV;
 	double		j;
 
-	V = minus((t_vector){0, 0, 0}, all->view);
 	j = 0;
-	R = ReflectRay(all->L, all->N);
-	RV = dot(R, V);
+	// R = ReflectRay(vec->L, vec->N);
+	R = minus(times(2 * dot(vec->N, vec->L), vec->N), vec->L);
+	RV = dot(R, vec->V);
 	if (RV > 0)
-		j = light->intense * pow((RV / (dlinna(R) * dlinna(V))), fig_specular(list));
-	// printf("j = %f\n", j);
+		j += intense * pow((RV / (dlinna(R) * dlinna(vec->V))), spec);
 	return (j);
 }
 
-t_vector	ReflectRay(t_vector N, t_vector L)
+t_vector	ReflectRay(t_vector L, t_vector N)
 {
 	t_vector	A;
 	t_vector	B;
@@ -85,19 +78,32 @@ int		color(double i, double j, t_clos clos)
 	t_vector	color;
 
 	color = int_to_rgb(fig_color(clos.obj));
-	// printf("i = %f, j = %f, col = %d\n", i, j, fig_color(clos.obj));
-	color.x += j * 20;
-	color.y += j * 20;
-	color.z += j * 20;
-	
-	// printf("1 = %f, %f, %f\n", color.x, color.y, color.z);
-	if ((color.x *= i) > 255)
-		color.x = 255;
-	if ((color.y *= i) > 255)
-		color.y = 255;
-	if ((color.z *= i) > 255)
-		color.z = 255;
 
+	color.x += j * 255;
+	color.y += j * 255;
+	color.z += j * 255;
+
+	color.x *= i;
+	color.y *= i;
+	color.z *= i;
+
+	color = check_color(color);
 	return (rgb_to_int(color));
 }
 
+t_vector	check_color(t_vector color)
+{
+	if (color.x > 255)
+		color.x = 255;
+	if (color.y > 255)
+		color.y = 255;
+	if (color.z > 255)
+		color.z = 255;
+	if (color.x < 0)
+		color.x = 0;
+	if (color.y < 0)
+		color.y = 0;
+	if (color.z < 0)
+		color.z = 0;
+	return (color);
+}

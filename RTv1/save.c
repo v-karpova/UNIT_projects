@@ -20,10 +20,10 @@ int		save_reflect(t_all *all, double *reflect)
 		(ft_strncmp(line, " specular:", 10) == 0))
 	{
 		*reflect = (double)ft_atoi(&line[10]);
-		if (*reflect >= 0 && *reflect <= 10)
+		if (*reflect >= 0 && *reflect <= 1000)
 			return (1);
 		else
-			*reflect = 10;
+			*reflect = 1000;
 		return (1);
 	}
 	return (0);

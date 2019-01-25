@@ -30,7 +30,7 @@ int		save_light(t_all *all)
 	return (0);
 }
 
-int		save_plane(t_all *all, t_obj *obj)
+int		save_plane(t_all *all)
 {
 	t_list		*tmp;
 	t_plane		plane;
@@ -49,7 +49,7 @@ int		save_plane(t_all *all, t_obj *obj)
 	return (0);
 }
 
-int		save_cylinder(t_all *all, t_obj *obj)
+int		save_cylinder(t_all *all)
 {
 	t_list		*tmp;
 	t_cylinder	cylinder;
@@ -69,7 +69,7 @@ int		save_cylinder(t_all *all, t_obj *obj)
 	return (0);
 }
 
-int		save_sphere(t_all *all, t_obj *obj)
+int		save_sphere(t_all *all)
 {
 	t_list		*tmp;
 	t_sphere	sphere;
@@ -88,7 +88,7 @@ int		save_sphere(t_all *all, t_obj *obj)
 	return (0);
 }
 
-int		save_cone(t_all *all, t_obj *obj)
+int		save_cone(t_all *all)
 {
 	t_list		*tmp;
 	t_cone		cone;
