@@ -1,0 +1,13 @@
+camera:0,0,-20
+
+rotation:0,0,0
+
+#light
+-intense:10
+-position:7,0,-8
+
+#sphere
+-color:191, 0, 0
+-specular:50
+-radius:3
+-center:0,0,0
