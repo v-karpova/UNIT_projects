@@ -194,8 +194,8 @@ t_vector		intersect_cone(t_cone *c, t_vector o, t_vector d);
 t_vector		intersect_plane(t_plane *plane, t_vector o, t_vector d);
 int				reflected_color(t_all *all, t_clos clos, t_vec *vec);
 double			diff(double intense, t_vec *vec);
-double			spec(double spec, double intense, t_vec *vec);
-int				color(double i, double j, t_clos clos);
+// double			spec(double spec, double intense, t_vec *vec);
+// int				color(double i, double j, t_clos clos);
 int				x_close(t_all *all);
 int				main(int argc, char **argv);
 void			go(t_all *all);
@@ -231,16 +231,13 @@ int				shadow(t_list *list, t_list *obj, t_vector o, t_vector d);
 
 
 
-int		save_transp(t_all *all, double *transp);
-int		save_shadow(t_all *all, double *shadow);
-int		save_reflect(t_all *all, double *reflect);
-int		save_specular(t_all *all, double *specular);
-double		fig_specular(t_list *list);
-double		fig_reflect(t_list *list);
-double		fig_transp(t_list *list);
-double		fig_shadow(t_list *list);
 
-int			trace_ray(t_all *all, t_list *list, t_vector o, t_vector d);
+
+
+
+
+
+int		trace_ray(t_all *all, t_list *list, t_vector o, t_vector d);
 int		mouse_press(int button, int x, int y, t_all *all);
 int		mouse_release(int button, int x, int y, t_all *all);
 int		mouse_move(int x, int y, t_all *all);
@@ -248,17 +245,41 @@ void	rotat_x(t_all *all, double angle);
 void	rotat_y(t_all *all, double angle);
 void	rotat_z(t_all *all, double angle);
 
-void	threads1(t_all *all);
-void	*threads2(void *v);
 
 
 
-void		ambient_light(t_all *all, t_list **l);
+int			save_transp(t_all *all, double *transp);
+int			save_shadow(t_all *all, double *shadow);
+int			save_reflect(t_all *all, double *reflect);
+int			save_specular(t_all *all, double *specular);
+double		fig_specular(t_list *list);
+double		fig_reflect(t_list *list);
+double		fig_transp(t_list *list);
+double		fig_shadow(t_list *list);
+void			ambient_light(t_all *all, t_list **l);
 t_vector		reflect(t_all *all, t_vec *vec, t_clos closer, t_vector local_color);
-
-
-
+t_vector		reflect_spec(t_all *all, t_vec *vec, t_clos closer, t_vector local_color);
+t_vector		transp(t_all *all, t_vec *vec, t_clos closer, t_vector local_color);
 t_vector		new_color(t_vector local, t_vector ref, double param);
+t_vector	get_random(t_vector vec1, t_vector vec2, double param);
+
+
+double			spec(double spec, double intense, t_vec *vec, double reflect);
+int				calc_color(double i, double j, t_vector color);
+
+
+void		shadow_type(t_vector *color, t_vec *vec, t_list *light, t_all *all, t_clos clos);
+void			soft_shadow(t_vector *color, t_vec *vec, t_list *light, t_all *all, t_clos clos);
+
+
+
+
+
+
+
+
+
+
 
 
 

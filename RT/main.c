@@ -30,6 +30,7 @@ void		go(t_all *all)
 	all->endian = 0;
 
 	all->depth_refl_spec = 0;
+	all->depth_refl = 0;
 	all->depth_transp = 0;
 	all->depth_max = 1;
 

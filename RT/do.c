@@ -37,7 +37,7 @@ void			do_it(t_all *all)
 		{
 			all->depth_refl = 0;
 			all->depth_refl_spec = 0;
-			// all->depth_transp = 0;
+			all->depth_transp = 0;
 			d = rotation(all, canvas_to_viewport(all, x, y));
 			all->color = trace_ray(all, all->obj, all->cam, d);
 			pixel_put_img(all, x + WIN_X / 2, WIN_Y / 2 - y, all->color);
@@ -77,19 +77,15 @@ int				trace_ray(t_all *all, t_list *list, t_vector o, t_vector d)
 	if (closer.obj != NULL)
 	{
 		local_color = int_to_rgb(reflected_color(all, closer, &vec));
-		if ((fig_reflect(closer.obj)) > 0 && (fig_specular(closer.obj)) == 0)
-			color = reflect(all, &vec, closer, local_color);
-		// if (fig_reflect(closer.obj) > 0 && fig_specular(closer.obj) > 0)
-		// 	color = reflect_specular(all, &vec, closer, local_color);
-		// if (fig_transp(closer.obj) > 0)
-		// 	color = refract(all, &vec, closer, local_color);
-
-		else
+		if ((fig_reflect(closer.obj)) > 0)
+			color = plus(color, reflect(all, &vec, closer, local_color));
+		if (fig_transp(closer.obj) > 0)
+			color = plus(color, transp(all, &vec, closer, local_color));
+		if ((fig_reflect(closer.obj)) == 0 && (fig_transp(closer.obj) == 0))
 			color = local_color;
 	}
 	return (rgb_to_int(color));
 }
-
 
 t_clos			closer_obj(t_list *list, t_vector o, t_vector d, double min)
 {
