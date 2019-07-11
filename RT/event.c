@@ -12,38 +12,17 @@
 
 #include "rt.h"
 
-// void	threads1(t_all *all)
-// {
-// 	int			i;
-// 	t_all		new_all[8];
-// 	pthread_t	thread[8];
 
-// 	i = -1;
-// 	while (++i < 8)
-// 	{
-// 		ft_memcpy((void *)&new_all[i], (void *)all, sizeof(t_all));
-// 		new_all[i].x = (WIN_X / 8) * i;
-// 		new_all[i].x_max = (WIN_X / 8) * (i + 1);
-// 	}
-// 	i = -1;
-// 	while (++i < 8)
-// 		pthread_create(&thread[i], NULL, threads2, &new_all[i]);
-// 	i = -1;
-// 	while (++i < 8)
-// 		pthread_join(thread[i], NULL);
-// 	mlx_put_image_to_window(MLX_PTR, WIN_PTR, IMG_PTR, 0, 0);
-// }
-
-// void	*threads2(void *v)
-// {
-// 	t_all		*all;
-// 	double		tmp_x;
-
-// 	all = (t_all *)v;
-// 	do_it(all);
-// 	return (all);
-// }
-
+int			event_2(int key, t_all *all)
+{
+	if (key >= 0 && key <= 272)
+	{
+		printf("press any key to continue\n");
+		// mlx_clear_window(MLX_PTR_2, WIN_PTR_2);
+		mlx_destroy_window(MLX_PTR_2, WIN_PTR_2);
+	}
+	return (0);
+}
 
 int			event(int key, t_all *all)
 {
@@ -87,7 +66,7 @@ int			event(int key, t_all *all)
 		((t_light *)(all->light->content))->pos.x += 2; 
 	}
 
-	do_it(all);
+	threads1(all);
 	// threads1(all);
 	return (0);
 }
@@ -127,7 +106,7 @@ int		mouse_move(int x, int y, t_all *all)
 
 		all->rot.x = (all->mouse.x - x) / 20;
 		all->rot.y = (all->mouse.y - y) / 20;
-		do_it(all);
+		threads1(all);
 	}
 	all->mouse.x = x;
 	all->mouse.y = y;

@@ -13,11 +13,16 @@
 #ifndef FT_RT_H
 # define FT_RT_H
 
-# define WIN_X 1000
-# define WIN_Y 1000
+# define WIN_X 400
+# define WIN_Y 400
 # define MLX_PTR all->mlx_ptr
 # define WIN_PTR all->win_ptr
 # define IMG_PTR all->img_ptr
+
+# define MLX_PTR_2 all->mlx_ptr_2
+# define WIN_PTR_2 all->win_ptr_2
+# define IMG_PTR_2 all->img_ptr_2
+
 # define PLANE 100
 # define SPHERE 101
 # define CYL 102
@@ -25,6 +30,7 @@
 # define LIGHT 104
 # define FON 0
 # define INF 600000
+# define CORES 36
 
 
 # include <unistd.h>
@@ -149,6 +155,11 @@ typedef struct	s_all
 	void		*mlx_ptr;
 	void		*win_ptr;
 	void		*img_ptr;
+
+	void		*mlx_ptr_2;
+	void		*win_ptr_2;
+	void		*img_ptr_2;
+
 	char		*img;
 	int			size_line;
 	int			bpp;
@@ -164,6 +175,9 @@ typedef struct	s_all
 	t_mouse		mouse;
 	int			is_cam;
 	int			is_light;
+	int			loading;
+	int			start;
+	int			end;
 }				t_all;
 
 t_vector		minus(t_vector a, t_vector b);
@@ -172,7 +186,8 @@ t_vector		times(double n, t_vector a);
 double			dot(t_vector a, t_vector b);
 double			dlinna(t_vector a);
 t_vector		norm(t_vector a);
-void			do_it(t_all *all);
+// void			do_it(t_all *all);
+void			*do_it(void *data_ptr);
 t_vector		canvas_to_viewport(t_all *all, double x, double y);
 // int				trace_ray(t_all *all, t_list *list, t_vector o, t_vector d);
 t_clos			closer_obj(t_list *list, t_vector o, t_vector d, double min);
@@ -225,8 +240,8 @@ void			rotate_y(double angle, double *x, double *z);
 void			rotate_z(double angle, double *x, double *y);
 int				num(char *str);
 int				shadow(t_list *list, t_list *obj, t_vector o, t_vector d);
-
-
+void  threads1(t_all *all);
+void  *threads2(void *v);
 
 
 
@@ -272,7 +287,7 @@ void		shadow_type(t_vector *color, t_vec *vec, t_list *light, t_all *all, t_clos
 void			soft_shadow(t_vector *color, t_vec *vec, t_list *light, t_all *all, t_clos clos);
 
 
-
+int			event_2(int key, t_all *all);
 
 
 

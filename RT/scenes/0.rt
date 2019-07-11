@@ -59,4 +59,13 @@ rotation:0,0,0
 -transparency:90
 -shadow:SOFT
 -radius:2
--center:10,15,-1
+-center:10,15,-20
+
+#sphere
+-color:246, 255, 0
+-specular:50
+-reflective:100
+-transparency:0
+-shadow:SOFT
+-radius:3
+-center:10,0,-1

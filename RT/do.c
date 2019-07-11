@@ -23,14 +23,75 @@ void			pixel_put_img(t_all *all, int x, int y, int color)
 	mlx_get_data_addr(all->img_ptr, &all->bpp, &all->size_line, &all->endian);
 }
 
-void			do_it(t_all *all)
+void	threads1(t_all *all)
+{
+	int			i;
+	t_all		new_all[CORES];
+	pthread_t	thread[CORES];
+
+	
+	i = -1;
+	while (++i < CORES)
+	{
+		all->start = i * (WIN_X / CORES) - 1;
+		all->end = (i + 1) * (WIN_X / CORES);
+		new_all[i].start = all->start;
+		new_all[i].end = all->end;
+		new_all[i].obj = all->obj;
+		new_all[i].clos = all->clos;
+
+		new_all[i].cam = all->cam;
+		new_all[i].obj = all->obj;
+		new_all[i].light = all->light;
+		new_all[i].fd = all->fd;
+		new_all[i].rot = all->rot;
+		new_all[i].closest = all->closest;
+		new_all[i].d = all->d;
+		new_all[i].mlx_ptr = all->mlx_ptr;
+		new_all[i].win_ptr = all->win_ptr;
+		new_all[i].img_ptr = all->img_ptr;
+
+		new_all[i].mlx_ptr_2 = all->mlx_ptr_2;
+		new_all[i].win_ptr_2 = all->win_ptr_2;
+		new_all[i].img_ptr_2 = all->img_ptr_2;
+
+		new_all[i].img = all->img;
+		new_all[i].size_line = all->size_line;
+		new_all[i].bpp = all->bpp;
+		new_all[i].endian = all->endian;
+		new_all[i].color = all->color;
+
+		new_all[i].x = all->x;
+		new_all[i].x_max = all->x_max;
+		new_all[i].depth_refl = all->depth_refl;
+		new_all[i].depth_refl_spec = all->depth_refl_spec;
+		new_all[i].depth_transp = all->depth_transp;
+		new_all[i].depth_max = all->depth_max;
+		new_all[i].mouse = all->mouse;
+		new_all[i].is_cam = all->is_cam;
+		new_all[i].is_light = all->is_light;
+		new_all[i].loading = all->loading;
+		new_all[i].start = all->start;
+		new_all[i].end = all->end;
+		pthread_create(&thread[i], NULL, do_it, &new_all[i]);
+	}
+	i = -1;
+	while (++i < CORES)
+		pthread_join(thread[i], NULL);
+	mlx_put_image_to_window(MLX_PTR, WIN_PTR, IMG_PTR, 0, 0);
+}
+
+void			*do_it(void *data_ptr)
 {
 	double		x;
 	double		y;
 	t_vector	d;
+	t_all		*all;
 
-	x = -WIN_X / 2 - 1;
-	while (x++ < WIN_X / 2)
+	all = (t_all *)data_ptr;
+	// x = -WIN_X / 2 - 1;
+	// while (x++ < WIN_X / 2)
+	while (++all->start < all->end)
 	{
 		y = -WIN_Y / 2;
 		while (y++ < WIN_Y / 2)
@@ -38,12 +99,14 @@ void			do_it(t_all *all)
 			all->depth_refl = 0;
 			all->depth_refl_spec = 0;
 			all->depth_transp = 0;
-			d = rotation(all, canvas_to_viewport(all, x, y));
+			d = rotation(all, canvas_to_viewport(all, all->start, y));
 			all->color = trace_ray(all, all->obj, all->cam, d);
-			pixel_put_img(all, x + WIN_X / 2, WIN_Y / 2 - y, all->color);
+			// pixel_put_img(all, x + WIN_X / 2, WIN_Y / 2 - y, all->color);
+			pixel_put_img(all, all->start, WIN_Y / 2 - y, all->color);
 		}
 	}
-	mlx_put_image_to_window(MLX_PTR, WIN_PTR, IMG_PTR, 0, 0);
+	pthread_exit(0);
+	// mlx_put_image_to_window(MLX_PTR, WIN_PTR, IMG_PTR, 0, 0);
 }
 
 t_vector		canvas_to_viewport(t_all *all, double x, double y)
