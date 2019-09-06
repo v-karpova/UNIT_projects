@@ -13,8 +13,8 @@
 #ifndef FT_RT_H
 # define FT_RT_H
 
-# define WIN_X 400
-# define WIN_Y 400
+# define WIN_X 600
+# define WIN_Y 600
 # define MLX_PTR all->mlx_ptr
 # define WIN_PTR all->win_ptr
 # define IMG_PTR all->img_ptr
@@ -30,8 +30,21 @@
 # define LIGHT 104
 # define FON 0
 # define INF 600000
-# define CORES 36
+# define CORES 8
 
+
+
+#define B 0x100
+#define BM 0xff
+#define N 0x1000
+#define NP 12
+#define NM 0xfff
+
+
+
+
+
+# define KOEF 1e-9
 
 # include <unistd.h>
 # include <stdlib.h>
@@ -39,7 +52,35 @@
 # include <pthread.h>
 # include "math.h"
 # include "mlx.h"
+# include "time.h"
 # include "libft/libft.h"
+
+
+
+
+
+
+// typedef struct	s_cal
+// {
+// 	double		tmp;
+// 	double		dirinv[2][2];
+// 	double		point[2];
+// 	double		det;
+// 	double		p;
+// 	double		q;
+// }			t_cal;
+
+
+
+
+
+
+
+
+
+
+
+
 
 typedef struct	s_clos
 {
@@ -75,7 +116,7 @@ typedef struct	s_plane
 	double		specular;
 	double		reflect;
 	double		transp;
-	double		shadow;
+	double		tex;
 }				t_plane;
 
 typedef struct	s_cylinder
@@ -87,18 +128,25 @@ typedef struct	s_cylinder
 	double		specular;
 	double		reflect;
 	double		transp;
-	double		shadow;
+	double		tex;
 }				t_cylinder;
 
 typedef struct	s_sphere
 {
 	double		r;
 	t_vector	c;
+
+
+	t_vector	c_motion;
+	double		time0;
+	double		time1;
+
+
 	int			color;
 	double		specular;
 	double		reflect;
 	double		transp;
-	double		shadow;
+	double		tex;
 }				t_sphere;
 
 typedef struct	s_cone
@@ -110,7 +158,7 @@ typedef struct	s_cone
 	double		specular;
 	double		reflect;
 	double		transp;
-	double		shadow;
+	double		tex;
 }				t_cone;
 
 typedef struct	s_obj
@@ -140,7 +188,6 @@ typedef struct	s_mouse
 	int			y;
 }				t_mouse;
 
-
 typedef struct	s_all
 {
 	t_clos		clos;
@@ -163,7 +210,30 @@ typedef struct	s_all
 	char		*img;
 	int			size_line;
 	int			bpp;
+	int			opp;
 	int			endian;
+
+
+	char		*img_2;
+	int			color_2;
+	t_vector	cam_2;
+
+
+
+
+
+
+	int			init_noise;
+	double		g3[B + B + 2][3];
+	double		g2[B + B + 2][2];
+	double		g1[B + B + 2];
+	double		p[B + B + 2];
+
+
+	char		*scene_name;
+
+	double		time0;
+
 	int			color;
 
 	int		x;
@@ -173,12 +243,25 @@ typedef struct	s_all
 	int		depth_transp;
 	int		depth_max;
 	t_mouse		mouse;
+	int			shadow;
 	int			is_cam;
 	int			is_light;
 	int			loading;
 	int			start;
 	int			end;
 }				t_all;
+
+typedef struct		s_noise
+{
+	double			*noise;
+	int				w_max;
+	int				h_max;
+	int				len;
+	int				pas;
+	int				octave;
+	// t_rgb			(*noise_func[3])(struct s_noise*, int, int);
+}					t_noise;
+
 
 t_vector		minus(t_vector a, t_vector b);
 t_vector		plus(t_vector a, t_vector b);
@@ -252,6 +335,7 @@ void  *threads2(void *v);
 
 
 
+
 int		trace_ray(t_all *all, t_list *list, t_vector o, t_vector d);
 int		mouse_press(int button, int x, int y, t_all *all);
 int		mouse_release(int button, int x, int y, t_all *all);
@@ -270,7 +354,6 @@ int			save_specular(t_all *all, double *specular);
 double		fig_specular(t_list *list);
 double		fig_reflect(t_list *list);
 double		fig_transp(t_list *list);
-double		fig_shadow(t_list *list);
 void			ambient_light(t_all *all, t_list **l);
 t_vector		reflect(t_all *all, t_vec *vec, t_clos closer, t_vector local_color);
 t_vector		reflect_spec(t_all *all, t_vec *vec, t_clos closer, t_vector local_color);
@@ -284,16 +367,32 @@ int				calc_color(double i, double j, t_vector color);
 
 
 void		shadow_type(t_vector *color, t_vec *vec, t_list *light, t_all *all, t_clos clos);
-void			soft_shadow(t_vector *color, t_vec *vec, t_list *light, t_all *all, t_clos clos);
+void		soft_shadow(t_vector *color, t_vec *vec, t_list *light, t_all *all, t_clos clos);
 
 
 int			event_2(int key, t_all *all);
 
 
+void	miss_open_brackets(t_all *all);
+void	miss_closed_brackets(t_all *all);
+void	save_objects(t_all *all);
+int		save_texture(t_all *all, double *texture);
+double		fig_texture(t_list *list);
 
 
 
 
+
+
+void	stereoscopy(t_all *all);
+void		blue_stereo(t_all *all);
+void		red_stereo(t_all *all);
+void		pixel_put_img_2(t_all *all, int x, int y, int color);
+
+
+
+
+void		screenshot(t_all *all);
 
 
 
